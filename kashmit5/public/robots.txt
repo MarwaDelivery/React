@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://panel.marwa.hu
+
+# Sitemaps
+Sitemap: https://panel.marwa.hu/sitemap.xml

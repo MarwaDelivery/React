@@ -1,0 +1,19 @@
+# OS / editor-specific
+__MACOSX/
+.idea/
+.vscode/
+
+node_modules/
+
+.next/
+
+.env.development
+.env.production
+
+*.zip
+
+*.log
+
+deploy.sh
+
+tmp/
