@@ -8,10 +8,10 @@ node_modules/
 .next/
 
 
+
 *.zip
 
 *.log
 
-deploy.sh
 
 tmp/
