@@ -98,9 +98,13 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
         sx={{
           backgroundColor:
             (scrollPosition !== 0 || toggled) && theme.palette.neutral[100],
-          borderRadius: "0px",
+          borderRadius: "0px 0px 15px 15px",
           paddingX: "0px",
           paddingY: { lg: "0px" },
+          overflow: "hidden",            // 👈 ensures children respect border radius
+          width: "100%",                  // 👈 prevent full width so curve is visible
+          mx: "auto",                    // 👈 center it horizontally
+      
         }}
         style={{ zIndex: 1251 }}
       >

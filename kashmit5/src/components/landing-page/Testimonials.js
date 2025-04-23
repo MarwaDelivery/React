@@ -116,8 +116,8 @@ const Testimonials = () => {
         <CustomContainer>
           <CustomStackFullWidth py={{ xs: "1.35rem", md: "3.35rem" }} spacing={4}>
             <Typography width="60%" marginLeft="20%"  textAlign="center" variant="h4">
-              {t("We")} <span style={{ color: primary }}>{t("satisfied")}</span>{" "}
-              {t("some Customer & Restaurant Owners")}
+              {t("Our")} <span style={{ color: primary }}>{t("satisfied")}</span>{" "}
+              {t("Customer & Restaurant Owners")}
             </Typography>
           </CustomStackFullWidth>
           <CustomStackFullWidth

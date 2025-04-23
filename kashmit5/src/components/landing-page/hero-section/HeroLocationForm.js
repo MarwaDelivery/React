@@ -79,13 +79,6 @@ const HeroLocationForm = () => {
 
       setGeoLocationEnable(true);
       setZoneIdEnabled(true);
-     
-   
-  
-     
-     
-     
-      
     } else {
       setOpenLocation(true);
     }
@@ -181,16 +174,16 @@ const HeroLocationForm = () => {
       toast.error(t("Location is required."), {
         id: "id",
       });
-    } 
-   /*  if (coords) {
-      setLocation({ lat: coords?.latitude, lng: coords?.longitude });
-      setOpenLocation(false);
-      setShowCurrentLocation(true);
-      setGeoLocationEnable(true);
-      setZoneIdEnabled(true);
-    } else {
-      setOpenLocation(true);
-    } */
+    }
+    /*  if (coords) {
+       setLocation({ lat: coords?.latitude, lng: coords?.longitude });
+       setOpenLocation(false);
+       setShowCurrentLocation(true);
+       setGeoLocationEnable(true);
+       setZoneIdEnabled(true);
+     } else {
+       setOpenLocation(true);
+     } */
 
     setGeoLocationEnable(true);
     setZoneIdEnabled(true);
@@ -198,7 +191,7 @@ const HeroLocationForm = () => {
     if (currentLocation && location) {
       if (getToken()) {
         wishlistRefetch();
-      } 
+      }
       localStorage.setItem("location", currentLocation);
       localStorage.setItem("currentLatLng", JSON.stringify(location));
       //handleModalClose();
@@ -211,12 +204,12 @@ const HeroLocationForm = () => {
       // } else {
       //   router.push("/home");
       // }
-    }  else {
+    } else {
       toast.error(t(location), {
         id: "id",
       });
-    }   
-   
+    }
+
   };
   const handleCloseModuleModal = (item) => {
     if (item) {
@@ -237,18 +230,18 @@ const HeroLocationForm = () => {
     ) {
       const formattedAddress = geoCodeResults.results[0].formatted_address;
       const latLng = { lat: coords.latitude, lng: coords.longitude };
-  
+
       setCurrentLocation(formattedAddress);
       setLocation(latLng);
-  
+
       localStorage.setItem("location", formattedAddress);
       localStorage.setItem("currentLatLng", JSON.stringify(latLng));
       localStorage.setItem("zoneid", zoneData.zone_id);
-  
+
       if (getToken()) {
         wishlistRefetch();
       }
-  
+
       toast.success(t("New location has been set."));
       router.push("/home");
     }
@@ -261,28 +254,28 @@ const HeroLocationForm = () => {
     wishlistRefetch,
     t,
     router,
-  ]);  
+  ]);
 
   return (
     <>
       <Stack
-     sx={{
-      width: "100%", // Default width for all devices
-      ["@media (min-width:600px)"]: { width: "100%" },  // For small devices and up (sm)
-      ["@media (min-width:1024px)"]: { width: "100%" },  // For medium devices and up (md)
-      ["@media (min-width:1280px)"]: { width: "50%" },  // For large devices and up (lg)
-      ["@media (min-width:1920px)"]: { width: "50%" },  // For extra large devices and up (xl)
-     }}
-        marginTop="-270px"
+        sx={{
+          width: "100%", // Default width for all devices
+          ["@media (min-width:600px)"]: { width: "100%" },  // For small devices and up (sm)
+          ["@media (min-width:1024px)"]: { width: "50%" },  // For medium devices and up (md)
+          ["@media (min-width:1280px)"]: { width: "100%" },  // For large devices and up (lg)
+          ["@media (min-width:1920px)"]: { width: "10%" },  // For extra large devices and up (xl)
+        }}
+        marginTop={{ xs: "-150px", md: "-200px", xl: "-270px" }}
         align="center"
-       // backgroundColor={alpha(theme.palette.primary.main, 0.2)}
-        padding={{ xs: "2rem", md: "0rem", lg:"0rem", xl:"0rem" }}
+        // backgroundColor={alpha(theme.palette.primary.main, 0.2)}
+        padding={{ xs: "2rem", md: "0rem", lg: "0rem", xl: "0rem" }}
         borderRadius={isXSmall ? "0px" : "14px"}
-         marginBottom={isXSmall && "35px"}
+        marginBottom={isXSmall && "35px"}
       >
         <CustomStackFullWidth
           direction={{
-            sm: "colum",
+            sm: "column",
             md: "row",
           }}
           spacing={{ xs: 1, md: 2 }}
@@ -298,18 +291,19 @@ const HeroLocationForm = () => {
               handleCloseLocation={handleCloseLocation}
               frommap="false"
               fromparcel="false"
-             // setLocationEnable ={setLocationEnable}
+            // setLocationEnable ={setLocationEnable}
             />
-          <StyledButton
+
+            {/* <StyledButton
               fullwidth="false"
               // language_direction={language_direction}
               radiuschange="true"
               onClick={() => setLocationEnable()}
             >
               {t("Set Location")}
-            </StyledButton>   
+            </StyledButton>  */}
           </CustomStackFullWidth>
-       {/*   <Typography pt="10px">{t("Or")}</Typography>
+          {/*   <Typography pt="10px">{t("Or")}</Typography>
            <StyledButton fullwidth="true" onClick={handleOpen}>{t("Pick Form Map")} </StyledButton> */}
         </CustomStackFullWidth>
         {open && (

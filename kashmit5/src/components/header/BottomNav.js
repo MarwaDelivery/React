@@ -20,7 +20,6 @@ const styles = {
   width: "100%",
   height: "100%",
   padding: "0px 1rem",
-  //paddingRight: "10px",
 };
 
 const BottomNav = () => {
@@ -44,9 +43,11 @@ const BottomNav = () => {
           bottom: 0,
           left: 0,
           right: 0,
-          padding: "px",
           width: "100%",
           zIndex: 111,
+          borderRadius: "20px 20px 0 0",  // 👈 Curved top corners
+          boxShadow: "0px -4px 6px rgba(0, 0, 0, 0.1)",  
+          padding: "px",
         }}
         elevation={3}
       >
@@ -64,7 +65,6 @@ const BottomNav = () => {
               value="home"
               icon={<HomeIcon />}
             />
-
             <CustomBottomNavigationAction
               label={t("My Orders")}
               value="my-orders"
@@ -89,7 +89,6 @@ const BottomNav = () => {
                 }
               />
             )}
-
             <CustomBottomNavigationAction
               label={t("Chat")}
               value="chatting"

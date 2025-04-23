@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
-
 import {
   alpha,
   Stack,
@@ -35,18 +34,17 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
         >
           <Typography
             sx={{
-              color: (theme) => theme.palette.neutral[1000],
-              fontSize: "4.30rem",
+              color: theme.palette.primary.main, //here
+              fontSize: "4.40rem",
               fontWeight: "bold",
             }}
           >
             {landingPageData?.hero_section?.hero_section_heading?.slice(0, 40)}
           </Typography>
           <Typography
-            color={theme.palette.primary.main}
+            color={theme.palette.primary.light}
             sx={{ fontSize: "2.50rem", fontWeight: "bold" }}
           >
-         
             {/* {landingPageData?.hero_section?.hero_section_heading?.slice(
               4,
               landingPageData?.hero_section?.hero_section_heading.length
@@ -54,50 +52,50 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
           </Typography>
         </Stack>
         <Typography
-          color={alpha(theme.palette.primary.main, 0.8)}
+          color= "rgba(0, 0, 0, 0.8)"
           variant="h4"
-          fontWeight="400"
+          fontWeight="bold"
           marginTop="0px !important"
-
-         
         >
           {landingPageData?.hero_section?.hero_section_slogan}
         </Typography>
       </CustomStackFullWidth>
-     {/*  <Typography
+
+      {/*  <Typography
         variant="h1"
         sx={{ color: (theme) => theme.palette.primary.main }}
       >
         {configData?.business_name}
       </Typography> */}
 
-      <CustomStackFullWidth spacing={2}   marginTop="16px !important">
-        <Typography variant={isXSmall ? "subtitle2" : "h5"} fontWeight="500">
+      <CustomStackFullWidth spacing={2} marginTop="16px !important">
+        <Typography variant={isXSmall ? "subtitle2" : "h5"} 
+        fontWeight="500"
+        color="rgb(36, 208, 36)"
+        >
           {landingPageData?.hero_section?.hero_section_short_description}
-      </Typography>
+        </Typography>
 
-        {/* <Stack  alignItems="center" justifyContent="center" >
+        {/* <Stack alignItems="center" justifyContent="center">
           <CustomButton
             variant="contained"
             onClick={() => handleOrderNow?.()}
             boxshadow="false"
-            showOrderNowButton={false} 
+            showOrderNowButton={false}
           >
-           <Stack direction="row"  alignItems="center" spacing={0.4}>
-             {/*  <Typography variant="h6" width="155px" color="whiteContainer.main">
+            <Stack direction="row" alignItems="center" spacing={0.4}>
+              {/*  <Typography variant="h6" width="155px" color="whiteContainer.main">
                 {t("Order Now")}
-              </Typography>   */}
-            {/*   <ArrowRightAltIcon
+              </Typography> */}
+              {/* <ArrowRightAltIcon
                 sx={{ color: (theme) => theme.palette.whiteContainer.main }}
-              /> 
-            </Stack> 
+              />
+            </Stack>
           </CustomButton>
         </Stack> */}
       </CustomStackFullWidth>
     </CustomStackFullWidth>
   );
 };
-
-
 
 export default HeroTitleSection;

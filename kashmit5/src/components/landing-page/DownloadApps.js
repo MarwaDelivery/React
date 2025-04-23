@@ -18,7 +18,7 @@ const DownloadApps = ({ configData }) => {
         color="customColor.textGray"
         sx={{ mt: 1 }}
       >
-        {t("Download our app from google play store & app store.")}
+        {t("Download our app from google play & app store.")}
       </Typography>
       <AppLinks configData={configData} />
     </CustomStackFullWidth>
