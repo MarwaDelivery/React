@@ -8,10 +8,4 @@ node_modules/
 .next/
 
 
-
-*.zip
-
-*.log
-
-
 tmp/
