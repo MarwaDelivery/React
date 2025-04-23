@@ -233,7 +233,7 @@ const StoresInfoCard = (props) => {
                 src={`https://panel.marwa.hu/storage/app/public/store/cover/${data?.cover_photo}`}
                 alt={data?.name}
             
-               height="230px"
+               height="180px"
                 width="100%"
                 objectfit="cover"
                 borderRadius={`10px`}

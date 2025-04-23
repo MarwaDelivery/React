@@ -45,7 +45,8 @@ const Index = ({ configData, storeDetails }) => {
 
 export default Index;
 export const getServerSideProps = async (context) => {
-  const storeId = context.query.id;
+  const storeId = context.query.id;  
+  const storeName = context.query.storeName;  
   const moduleId = context.query.module_id;
 
   const configRes = await fetch(
@@ -77,6 +78,7 @@ export const getServerSideProps = async (context) => {
     props: {
       configData: config,
       storeDetails: storeDetails,
+      storeName,
     },
   };
 };

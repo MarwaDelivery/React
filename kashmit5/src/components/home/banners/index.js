@@ -6,7 +6,7 @@ import Slider from "react-slick";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 import useGetBanners from "../../../api-manage/hooks/react-query/useGetBanners";
 import { styled, useMediaQuery } from "@mui/material";
-import { Box, margin, padding } from "@mui/system";
+import { Box, height, margin, padding } from "@mui/system";
 import CustomImageContainer from "../../CustomImageContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
@@ -16,7 +16,7 @@ import FoodDetailModal from "../../food-details/foodDetail-modal/FoodDetailModal
 import { setBanners } from "../../../redux/slices/storedData";
 import {getCurrentModuleType} from "helper-functions/getCurrentModuleType";
 
-const BannersWrapper = styled(Box)(({ theme }) => ({
+/*const BannersWrapper = styled(Box)(({ theme }) => ({
   cursor: "pointer",
   borderRadius: "10px",
   width: "100%",
@@ -28,7 +28,26 @@ const BannersWrapper = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     height: "150px",
   },
+}));*/
+
+
+const BannersWrapper = styled(Box)(({ theme }) => ({
+  cursor: "pointer",
+  borderRadius: "10px",
+  width: "98%",
+  marginLeft: "3% !important",
+  height: "350px",
+  [theme.breakpoints.down("md")]: {
+    height: "200",
+  },
+  [theme.breakpoints.down("sm")]: {
+    height: "150",
+  },
+  [theme.breakpoints.down("xs")]: {
+    height: "70px",
+  },
 }));
+
 const Banners = (props) => {
   const router = useRouter();
   const { selectedModule } = useSelector((state) => state.utilsData);
@@ -117,15 +136,26 @@ const Banners = (props) => {
     dots: false,
     infinite: true,
     slidesToShow: 2,
+    responsive: [
+      {
+        breakpoint: 768, 
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],  
     slidesToScroll: 1,
     autoplay: true,
     speed: 800,
     autoplaySpeed: 4000,
     cssEase: "linear",
-   
-  };
+    };
   const isSmall = useMediaQuery("(max-width:1180px)");
 
+  if (selectedModule?.module_type !== "food") {
+    return null;
+  }
+  
   return (
     <>
       <CustomStackFullWidth sx={{ mt: isSmall && "1.5rem" }}>
@@ -170,7 +200,7 @@ const Banners = (props) => {
         />
       )}
     </>
-  );
+  );  
 };
 
 Banners.propTypes = {};

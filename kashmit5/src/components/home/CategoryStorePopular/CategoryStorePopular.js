@@ -34,6 +34,16 @@ const CategoryStorePopular = ({ isFetching, isSuccess, item }) => {
             >
               {t("View all")}
             </Button>
+
+            {/*<Button
+              variant="text"
+              onClick={() => {
+                router.push(`/home/${item.module_type}`);
+              }}
+            >
+              {t("View all")}
+            </Button>*/}
+
           </CustomStackFullWidth>
 
           <CardsGrid

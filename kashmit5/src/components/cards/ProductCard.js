@@ -65,10 +65,10 @@ export const CardWrapper = styled(Card)(
 const CustomCardMedia = styled(CardMedia)(({ theme, horizontalcard }) => ({
   position: "relative",
   overflow: "hidden",
-  padding: "0",
+  paddingTop: "6px",
   borderRadius: horizontalcard === "true" ? "0x 10px" : "10px 10px 0 0",
   height: horizontalcard === "true" ? "100%" : "180px",
-  width: horizontalcard === "true" && "230px",
+  width: horizontalcard === "true" && "250px",
 
   backgroundColor:"white",
    // horizontalcard === "true" ? theme.palette.neutral[100] : "none",
@@ -83,6 +83,7 @@ export const CustomCardButton = styled(CustomButtonPrimary)(
     background: disabled
       ? alpha(theme.palette.secondary.light, 0.3)
       : theme.palette.secondary.light,
+      bottom: "17px"
   })
 );
 

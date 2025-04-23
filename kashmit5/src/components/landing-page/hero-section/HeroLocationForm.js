@@ -263,7 +263,7 @@ const HeroLocationForm = () => {
           width: "100%", // Default width for all devices
           ["@media (min-width:600px)"]: { width: "100%" },  // For small devices and up (sm)
           ["@media (min-width:1024px)"]: { width: "50%" },  // For medium devices and up (md)
-          ["@media (min-width:1280px)"]: { width: "100%" },  // For large devices and up (lg)
+          ["@media (min-width:1280px)"]: { width: "50%" },  // For large devices and up (lg)
           ["@media (min-width:1920px)"]: { width: "10%" },  // For extra large devices and up (xl)
         }}
         marginTop={{ xs: "-150px", md: "-200px", xl: "-270px" }}

@@ -14,7 +14,7 @@ const ClosedNowOverlay = ({ borderRadius }) => {
         bottom: 0,
         left: 0,
         width: "100%",
-        background: (theme) => alpha(theme.palette.primary.overLay, 0.5),
+        background: (theme) => alpha(theme.palette.primary.main, 0.5),
         color: (theme) => theme.palette.neutral[100],
         padding: "10px",
         height: "100%",

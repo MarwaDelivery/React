@@ -4,7 +4,7 @@ import { darkThemeOptions } from './dark-theme-options';
 import { lightThemeOptions } from './light-theme-options';
 export const createTheme = (config) => {
     let theme = createMuiTheme(baseThemeOptions,
-        config.mode === 'dark' ? darkThemeOptions : lightThemeOptions,
+        config.mode === 'light' ? darkThemeOptions : lightThemeOptions,
         {
             direction: config.direction
         });

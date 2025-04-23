@@ -82,7 +82,6 @@ const PrimaryWrapper = styled(Box)(({ theme, borderradius }) => ({
   borderRadius: borderradius,
   cursor: "pointer",
 }));
-
 const initialState = {
   viewMap: false,
   moreView: false,

@@ -126,8 +126,8 @@ const MiddleSection = (props) => {
   return (
     <CustomBoxFullWidth maxWidth="80%" marginLeft="10% !important">
       {(moduleId || module_id) && (
-        <Grid container>
-          <Grid item xs={0} sm={0} md={0} lg={2.5}>
+        <Grid container >
+          <Grid item xs={0} sm={0} md={0} lg={2.5} width = "100%">
             <Sidebar
               {...props}
               onClose={() =>
@@ -155,20 +155,13 @@ const MiddleSection = (props) => {
             alignItems="flex-start"
           >
             <Grid item xs={12} container spacing={2}>
-              <Grid item xs={moduleId === 4 ? 12 : 2} sm={6} md={6} lg={8}>
+              <Grid item xs={moduleId === 4 ? 12 : 2} sm={6} md={12} lg={12}>
                 <CustomStackFullWidth
                   direction="row"
                   alignItems="center"
                   spacing={2}
                 >
-                  <IconButton
-                    onClick={() =>
-                      dispatch({ type: ACTION.setIsSidebarOpen, payload: true })
-                    }
-                    //sx={{ display: { lg: "none" } }}
-                  >
-                    <MenuOpenIcon />
-                  </IconButton>
+                  
                   {Number.parseInt(storeDetails?.module_id) ===
                     Number.parseInt(4) && (
                     <OutlinedGroupButtons
@@ -182,7 +175,7 @@ const MiddleSection = (props) => {
                 item
                 xs={moduleId === 4 ? 12 : 10}
                 sm={6}
-                md={6}
+                md={12}
                 lg={4}
                 align="right"
                 justifyContent="center"

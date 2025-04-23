@@ -4,7 +4,7 @@ export const baseThemeOptions = {
       xs: 0,
       sm: 600,
       md: 1024,
-      lg: 1280,
+      lg: 4050,
       xl: 1920,
     },
   },
