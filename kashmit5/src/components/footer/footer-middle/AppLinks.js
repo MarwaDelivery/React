@@ -1,55 +1,54 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Paper, Stack, styled, Typography } from "@mui/material";
+import { Button, Stack, Typography, styled, useTheme } from "@mui/material";
 import CustomImageContainer from "../../CustomImageContainer";
 import appleicon from "../../../../public/static/footer/apple.svg";
 import playstoreicon from "../../../../public/static/footer/playstore.svg";
-import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 import { useTranslation } from "react-i18next";
-import {useTheme} from "@emotion/react";
+
 export const CustomButton = styled(Button)(({ theme }) => ({
-  // width: "153px",
-  height: "45px",
-  borderRadius: "5px",
-  cursor: "pointer",
+  height: "48px",
+  minWidth: "145px",
+  borderRadius: "6px",
   backgroundColor: theme.palette.footer.appDownloadButtonBg,
+  textTransform: "none",
+  padding: "0 17px", // Ensuring proper padding
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between", // Ensures content is properly spaced
   "&:hover": {
     backgroundColor: theme.palette.footer.appDownloadButtonBgHover,
   },
   [theme.breakpoints.down("md")]: {
-    maxWidth: "150px",
-    height: "40px",
+    width: "100%",
+    maxWidth: "250px",
+    height: "48px", // Keeps the button height consistent
+  },
+  [theme.breakpoints.up("lg")]: {
+    maxWidth: "250px", // Limit max-width for large screens to prevent overlap
   },
 }));
-const AppLinks = (props) => {
-  const { configData, changeSingle } = props;
-  const theme=useTheme()
 
-  let language_direction;
-  if (typeof window !== "undefined") {
-    language_direction = window.localStorage.getItem("direction");
-  }
+const AppLinks = ({ configData }) => {
+  const theme = useTheme();
+  const { t } = useTranslation();
+
   const goToApp = (href) => {
     window.open(href);
   };
-  const { t } = useTranslation();
+
   const googlePlay = () => (
     <CustomButton
       onClick={() => goToApp(configData?.landing_page_links?.app_url_android)}
       variant="contained"
     >
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        spacing={0.5}
-      >
+      <Stack direction="row" alignItems="center" spacing={1}>
         <CustomImageContainer
           src={playstoreicon.src}
           alt="GooglePlay"
-          objectfit="contained"
-          height="26px"
-          width="26px"
+          objectfit="contain"
+          height="24px"
+          width="24px"
         />
         <Stack alignItems="flex-start" justifyContent="center">
           <Typography sx={{ fontSize: "11px", color: "customColor.textGray" }}>
@@ -62,23 +61,19 @@ const AppLinks = (props) => {
       </Stack>
     </CustomButton>
   );
+
   const appleStore = () => (
     <CustomButton
       onClick={() => goToApp(configData?.landing_page_links?.app_url_ios)}
       variant="contained"
     >
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        spacing={0.5}
-      >
+      <Stack direction="row" alignItems="center" spacing={1}>
         <CustomImageContainer
           src={appleicon.src}
-          alt="GooglePlay"
-          objectfit="contained"
-          height="26px"
-          width="26px"
+          alt="AppStore"
+          objectfit="contain"
+          height="24px"
+          width="24px"
         />
         <Stack alignItems="flex-start" justifyContent="center">
           <Typography sx={{ fontSize: "11px", color: "customColor.textGray" }}>
@@ -91,23 +86,23 @@ const AppLinks = (props) => {
       </Stack>
     </CustomButton>
   );
+
   return (
     <Stack
-      direction="row"
+      direction={{ xs: "column", sm: "row" }}
       spacing={2}
-      sx={{ mt: 2 }}
-      gap={language_direction === "rtl" && "10px"}
+      alignItems="center"
+      sx={{ mt: 2, mb: 4 }} // Added margin-bottom to ensure spacing from footer content
       justifyContent="center"
     >
-      {Number.parseInt(
-        configData?.landing_page_links?.app_url_android_status
-      ) === 1 && googlePlay()}
-      {Number.parseInt(configData?.landing_page_links?.app_url_ios_status) ===
-        1 && appleStore()}
+      {Number.parseInt(configData?.landing_page_links?.app_url_android_status) === 1 && googlePlay()}
+      {Number.parseInt(configData?.landing_page_links?.app_url_ios_status) === 1 && appleStore()}
     </Stack>
   );
 };
 
-AppLinks.propTypes = {};
+AppLinks.propTypes = {
+  configData: PropTypes.object.isRequired,
+};
 
 export default AppLinks;
