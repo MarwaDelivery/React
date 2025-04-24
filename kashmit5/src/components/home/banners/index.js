@@ -35,16 +35,20 @@ const BannersWrapper = styled(Box)(({ theme }) => ({
   cursor: "pointer",
   borderRadius: "10px",
   width: "98%",
-  marginLeft: "3% !important",
-  height: "350px",
+  marginLeft: "2% !important",
+  height: "350px", // Default large screen
+
+  [theme.breakpoints.down("lg")]: {
+    height: "280px",
+  },
   [theme.breakpoints.down("md")]: {
-    height: "200",
+    height: "220px",
   },
   [theme.breakpoints.down("sm")]: {
-    height: "150",
+    height: "160px",
   },
   [theme.breakpoints.down("xs")]: {
-    height: "70px",
+    height: "120px",
   },
 }));
 
@@ -138,7 +142,7 @@ const Banners = (props) => {
     slidesToShow: 2,
     responsive: [
       {
-        breakpoint: 768, 
+        breakpoint: 900, 
         settings: {
           slidesToShow: 1,
         },

@@ -266,7 +266,7 @@ const HeroLocationForm = () => {
           ["@media (min-width:1280px)"]: { width: "50%" },  // For large devices and up (lg)
           ["@media (min-width:1920px)"]: { width: "10%" },  // For extra large devices and up (xl)
         }}
-        marginTop={{ xs: "-150px", md: "-200px", xl: "-270px" }}
+        marginTop={{ xs: "-190px", md: "-200px", xl: "-270px" }}
         align="center"
         // backgroundColor={alpha(theme.palette.primary.main, 0.2)}
         padding={{ xs: "2rem", md: "0rem", lg: "0rem", xl: "0rem" }}
