@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import { Box, Stack } from "@mui/system";
+import { Box, margin, padding, Stack } from "@mui/system";
 import CustomImageContainer from "../CustomImageContainer";
 import { alpha, Card, CardMedia, Typography, useTheme } from "@mui/material";
 import { CustomButtonPrimary } from "styled-components/CustomButtons.style";
@@ -57,7 +57,7 @@ export const CardWrapper = styled(Card)(
   })
 );
 
-const CustomCardMedia = styled(CardMedia)(({ theme, horizontalcard }) => ({
+/*const CustomCardMedia = styled(CardMedia)(({ theme, horizontalcard }) => ({
   position: "relative",
   overflow: "hidden",
   paddingTop: "6px",
@@ -67,8 +67,35 @@ const CustomCardMedia = styled(CardMedia)(({ theme, horizontalcard }) => ({
   backgroundColor: horizontalcard === "true" ? theme.palette.grey[100] : "white",
 
   [theme.breakpoints.down("md")]: {
-    width: horizontalcard === "true" ? "200px" : "100%", // smaller media width
-    height: horizontalcard === "true" ? "100%" : "150px", // optional height change
+    width: horizontalcard === "true" ? "200px" : "100%", // medium media width
+    height: horizontalcard === "true" ? "100%" : "150px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: horizontalcard === "true" ? "260px" : "100%", // smaller media width
+    marginTop:"2px", //9px
+  },
+}));*/
+
+const CustomCardMedia = styled("div")(({ theme, horizontalcard }) => ({
+  position: "relative",
+  overflow: "hidden",
+  borderRadius: horizontalcard === "true" ? "0 10px 10px 0" : "10px 10px 0 0",
+  backgroundColor: horizontalcard === "true" ? theme.palette.grey[100] : "white",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  width: horizontalcard === "true" ? "250px" : "100%",
+  height: horizontalcard === "true" ? "100%" : "180px",
+  aspectRatio: horizontalcard === "true" ? "unset" : "16 / 9", // optional aspect ratio
+
+  [theme.breakpoints.down("md")]: {
+    width: horizontalcard === "true" ? "200px" : "100%",
+    height: horizontalcard === "true" ? "100%" : "150px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: horizontalcard === "true" ? "260px" : "100%",
+    marginTop: "2px",
   },
 }));
 
@@ -343,10 +370,17 @@ const ProductCard = (props) => {
             {handleBadge()}
             <CustomImageContainer
               src={`${imageBaseUrl}/${item?.image}`}
+              //src={"/sample2.jpg"}
               alt={item?.title}
               height="100%"
               width="100%"
-              objectfit="contain"
+              objectfit="cover"
+              style={{
+                borderRadius: "inherit",
+                objectFit: "cover",
+                height: "100%",
+                width: "100%",
+              }}
             />
             {item?.module?.module_type === "food" && (
               <ProductsUnavailable product={item} />

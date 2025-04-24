@@ -1,18 +1,15 @@
 import React, { useEffect, useReducer, useState } from "react";
 import {
   Button,
-  Grid,
   Box,
-  TextField,
   Typography,
   useMediaQuery,
+  Menu,
+  MenuItem,
+  Grid,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGetCategories } from "../../../api-manage/hooks/react-query/all-category/all-categorys";
-import { Skeleton } from "@mui/material";
-import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { useTheme } from "@emotion/react";
 
 const initialState = {
@@ -23,15 +20,9 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "setCategories":
-      return {
-        ...state,
-        categories: action.payload,
-      };
+      return { ...state, categories: action.payload };
     case "setIsSelected":
-      return {
-        ...state,
-        isSelected: action.payload,
-      };
+      return { ...state, isSelected: action.payload };
     default:
       return state;
   }
@@ -43,19 +34,26 @@ const ACTION = {
 };
 
 const Sidebar = (props) => {
-  const {
-    ownCategories,
-    handleCategoryId,
-    handleChangePrice,
-    priceFilterRange,
-    storesApiLoading,
-  } = props;
-
+  const { ownCategories, handleCategoryId } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { t } = useTranslation();
   const theme = useTheme();
-  const [minMax, setMinMax] = useState([0, 0]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  
+  const getMaxVisible = () => {
+    if (isSmallScreen) {
+      // For mobile - calculate based on container width and button min-width
+      const containerWidth = document.querySelector('.categories-container')?.offsetWidth || 200;
+      const buttonWidth = 100; // Minimum button width you want
+      return Math.max(1, Math.floor(containerWidth / buttonWidth) - 1); // -1 to account for "More" button
+    }
+    return 5; // Default for larger screens
+  };
+  
+  const MAX_VISIBLE = getMaxVisible();
   const handleOnSuccess = (res) => {
     if (ownCategories?.length > 0 && res?.data?.length > 0) {
       const common = res?.data?.filter((item) =>
@@ -65,11 +63,7 @@ const Sidebar = (props) => {
     }
   };
 
-  const { refetch, isFetching } = useGetCategories(
-    "",
-    handleOnSuccess,
-    "stores-categories"
-  );
+  const { refetch } = useGetCategories("", handleOnSuccess, "stores-categories");
 
   useEffect(() => {
     refetch();
@@ -80,93 +74,93 @@ const Sidebar = (props) => {
     handleCategoryId?.(id);
   };
 
-  const handleMinMax = (value) => {
-    if (value[0] === 0) {
-      value[0] = priceFilterRange?.[0]?.min_price;
-    }
-    setMinMax(value);
+  const handleMoreClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleFilter = () => {
-    handleChangePrice(minMax);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
-    <Box sx={{ p: 2, backgroundColor: "white", borderRadius: "8px", mb: 2}}>
-      <Grid container spacing={2} alignItems="center">
-        {/* Categories Filter */}
-        <Grid item xs={12} md={8}>
-          <Typography fontWeight="bold" mb={1}>
-            {t("Categories")}
-          </Typography>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1}}>
-            <Button
-              variant={state.isSelected === 0 ? "contained" : "outlined"}
-              onClick={() => handleCategoriesClick(0)}
-            >
-              {t("All")}
-            </Button>
-            {state.categories.map((item) => (
-              <Button
+<Box sx={{ 
+  p: 2, 
+  backgroundColor: "white", 
+  borderRadius: "8px", 
+  mb: 2 
+}}>
+  <Grid item xs={12} md={12} lg={12}>
+    <Typography fontWeight="bold" mb={1}>
+      {t("Categories")}
+    </Typography>
+    <Box sx={{
+      display: "flex",
+      flexWrap:"wrap",
+      gap: 1, // Consistent spacing
+      width: "100%",
+      '& .MuiButton-root': {
+        flex: "1 1 auto", // Grow and shrink as needed
+        minWidth: { xs: "100px", sm: "120px" }, // Responsive min-width
+        maxWidth: { xs: "100px", sm: "200px" }, // Responsive max-width
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        fontSize: { xs: "0.75rem", sm: "0.875rem" }, // Smaller text on mobile
+        p: { xs: "4px 8px", sm: "6px 12px" }, // Adjust padding
+      }
+    }}>
+      <Button
+        variant={state.isSelected === 0 ? "contained" : "outlined"}
+        onClick={() => handleCategoriesClick(0)}
+      >
+        {t("All")}
+      </Button>
+
+      {state.categories.slice(0, MAX_VISIBLE).map((item) => (
+        <Button
+          key={item.id}
+          variant={state.isSelected === item.id ? "contained" : "outlined"}
+          onClick={() => handleCategoriesClick(item.id)}
+        >
+          {item.name}
+        </Button>
+      ))}
+
+      {state.categories.length > MAX_VISIBLE && (
+        <>
+          <Button
+            variant="outlined"
+            onClick={handleMoreClick}
+          >
+            {t("More")} ({state.categories.length - MAX_VISIBLE})
+          </Button>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              dense: true,
+            }}
+          >
+            {state.categories.slice(MAX_VISIBLE).map((item) => (
+              <MenuItem
                 key={item.id}
-                variant={state.isSelected === item?.id ? "contained" : "outlined"}
-                onClick={() => handleCategoriesClick(item?.id)}
+                onClick={() => {
+                  handleCategoriesClick(item.id);
+                  handleClose();
+                }}
+                selected={state.isSelected === item.id}
               >
-                {item?.name}
-              </Button>
+                {item.name}
+              </MenuItem>
             ))}
-          </Box>
-        </Grid>
-
-        {/* Price Filter */}
-     {/*   <Grid item xs={12} md={4}>
-          <Typography fontWeight="bold" mb={1}>
-            {t("Price Range")}
-          </Typography>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item xs={6} sm={4}>
-              <TextField
-                size="small"
-                label={t("Min")}
-                fullWidth
-                value={minMax[0] === 0 ? "" : minMax[0]}
-                onChange={(e) => {
-                  if (e.target.value >= 0) {
-                    setMinMax((prev) => [e.target.value, prev[1]]);
-                  }
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <TextField
-                size="small"
-                label={t("Max")}
-                fullWidth
-                value={minMax[1] === 0 ? "" : minMax[1]}
-                onChange={(e) => {
-                  if (e.target.value >= 0) {
-                    setMinMax((prev) => [prev[0], e.target.value]);
-                  }
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <LoadingButton
-                fullWidth
-                variant="contained"
-                loading={storesApiLoading}
-                disabled={JSON.stringify(minMax) === JSON.stringify([0, 0])}
-                onClick={handleFilter}
-                sx={{ height: "100%" }}
-              >
-                <ArrowRightIcon />
-              </LoadingButton>
-            </Grid>
-          </Grid>
-        </Grid>*/}
-      </Grid>
+          </Menu>
+        </>
+      )}
     </Box>
+  </Grid>
+</Box>
   );
-};
-
+};  
 export default Sidebar;
