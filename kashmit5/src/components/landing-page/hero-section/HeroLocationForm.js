@@ -46,6 +46,10 @@ const HeroLocationForm = () => {
   const [placeDetailsEnabled, setPlaceDetailsEnabled] = useState(false);
   const [openModuleSelection, setOpenModuleSelection] = useState(false);
   const [selectedPlaceFromSearch, setSelectedPlaceFromSearch] = useState(false);
+
+  const [locationSet, setLocationSet] = useState(false);
+
+  
   const dispatch = useDispatch();
   const handleClose = () => {
     setOpen(false);
@@ -198,7 +202,7 @@ const HeroLocationForm = () => {
       localStorage.setItem("currentLatLng", JSON.stringify(location));
       //handleModalClose();
 
-      toast.success(t("New location has been set."));
+      //toast.success(t("New location has been set."));
       //setOpenModuleSelection(true);
       router.push("/home");
       // if (!selectedModule) {
@@ -222,13 +226,14 @@ const HeroLocationForm = () => {
   };
 
   //Here is the Changes
-  useEffect(() => {
+/*   useEffect(() => {
     if (
       coords &&
       geoCodeResults?.results?.[0]?.formatted_address &&
       zoneData?.zone_id &&
       !openLocation &&
-      !openModuleSelection
+      !openModuleSelection &&
+      !selectedPlaceFromSearch // ✅ Avoid toast when manual place is selected
     ) {
       const formattedAddress = geoCodeResults.results[0].formatted_address;
       const latLng = { lat: coords.latitude, lng: coords.longitude };
@@ -246,6 +251,7 @@ const HeroLocationForm = () => {
 
       toast.success(t("New location has been set."));
       router.push("/home");
+      setSelectedPlaceFromSearch(false); // reset
     }
   }, [
     coords,
@@ -278,6 +284,45 @@ const HeroLocationForm = () => {
       setSelectedPlaceFromSearch(false); // reset
     }
   }, [selectedPlaceFromSearch, location, currentLocation, zoneData, wishlistRefetch, router, t]);
+ */
+
+
+  useEffect(() => {
+    const canProceed =
+      zoneData?.zone_id &&
+      location &&
+      currentLocation &&
+      !openLocation &&
+      !openModuleSelection &&
+      !locationSet;
+  
+    if (canProceed) {
+      localStorage.setItem("location", currentLocation);
+      localStorage.setItem("currentLatLng", JSON.stringify(location));
+      localStorage.setItem("zoneid", zoneData.zone_id);
+  
+      if (getToken()) {
+        wishlistRefetch();
+      }
+  
+      toast.success(t("New location has been set."));
+      setLocationSet(true); // ✅ Prevents future triggers
+      router.push("/home");
+    }
+  }, [
+    coords,
+    location,
+    currentLocation,
+    zoneData,
+    openLocation,
+    openModuleSelection,
+    selectedPlaceFromSearch,
+    wishlistRefetch,
+    router,
+    t,
+    locationSet, // include in deps
+  ]);
+    
   
 
   return (

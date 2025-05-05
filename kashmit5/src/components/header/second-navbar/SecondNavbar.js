@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   alpha,
+  Box,
   IconButton,
   NoSsr,
   Stack,
@@ -8,7 +9,6 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-  Box
 } from "@mui/material";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
@@ -94,34 +94,20 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
   };
   return (
     <Box
-    sx={{
-      width: '100vw',
-      position: 'sticky',
-      top: 0,
-      zIndex: 1251,
-      backgroundColor: (scrollPosition !== 0 || toggled)
-        ? theme.palette.neutral[100]
-        : 'transparent',
-      boxShadow: scrollPosition > 0 ? theme.shadows[1] : 'none',
-      transition: 'all 0.3s ease',
-    }}
-  >
+    sx={{ width: "100%", backgroundColor: (scrollPosition !== 0 || toggled) && theme.palette.neutral[100] }}>
     <CustomContainer>
       <Toolbar
         disableGutters={true}
         sx={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 1251,
-          backgroundColor:'transparent',
-          borderRadius: scrollPosition > 0 ? "0px 0px 15px 15px" : "0",
+          backgroundColor:
+            (scrollPosition !== 0 || toggled) && theme.palette.neutral[100],
+          borderRadius: "0px 0px 15px 15px",
           paddingX: "0px",
           paddingY: { lg: "0px" },
-          overflow: "hidden",
-          width: "100%",
-          mx: "auto",
-          transition: 'all 0.3s ease',
-          boxShadow: scrollPosition > 0 ? theme.shadows[1] : 'none'
+          overflow: "hidden",            // 👈 ensures children respect border radius
+          width: "100%",                  // 👈 prevent full width so curve is visible
+          mx: "auto",                    // 👈 center it horizontally
+      
         }}
         style={{ zIndex: 1251 }}
       >
@@ -185,7 +171,7 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
                     badgeCount={totalWishList}
                   />
                 )}
-                {moduleType !== "parcel" && location && router.pathname !== "/" && <Cart />}
+                {moduleType !== "parcel" && location && <Cart />}
                 {token ? (
                   <IconButton
                     ref={anchorRef}

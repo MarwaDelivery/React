@@ -52,7 +52,7 @@ const TopNavBar = () => {
                 sx={{
                   backgroundImage:
                     "linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0))",
-                  // backdropFilter: "blur(10px)",
+                 // backdropFilter: "blur(10px)",
                 }}
               >
                 <CustomStackForLoaction direction="row">
@@ -65,24 +65,24 @@ const TopNavBar = () => {
                   alignItems="center"
                 >
                   <ThemeSwitches />
-                  <ClickToCall>
+               <ClickToCall>
                     <TopBarButton
                       size="small"
-                      variant="text"
-                      startIcon={
-                        <LocalPhoneIcon
+                     variant="text"
+                     startIcon={
+                       <LocalPhoneIcon
                           sx={{
                             ml: 1,
                             color: (theme) => theme.palette.neutral[1000],
-                          }}
-                        />
-                      }
-                    >
-                      <Typography color={theme.palette.neutral[1000]}>
-                        {configData?.phone}
-                      </Typography>
-                    </TopBarButton>
-                  </ClickToCall>
+                         }}
+                       />
+                     }
+                   >
+                    <Typography color={theme.palette.neutral[1000]}>
+                   {configData?.phone} 
+                    </Typography>
+                  </TopBarButton> 
+                 </ClickToCall> 
                   <CustomLanguage />
                 </Stack>
               </Stack>
@@ -90,13 +90,15 @@ const TopNavBar = () => {
             {!location && (
               <Box
                 sx={{
-                  display: isSmall ? "none" : "block",
-                  borderRadius: "0",
-                  transition: 'all 0.3s ease',
-                  transform: showTopNav ? 'translateY(0)' : 'translateY(-100%)',
-                  position: 'sticky',
-                  top: 0,
-                  zIndex: 1250
+                  display: {
+                    xs: "flex",
+                    md: "none",
+                    alignItems: "center",
+                    gap: "10px",
+                    flexDirection: "row",
+                    justifyContent: " space-between ",
+                  },
+                  flexGrow: 1,
                 }}
               >
                 {/* <Logo src={logoSm.src} /> */}
