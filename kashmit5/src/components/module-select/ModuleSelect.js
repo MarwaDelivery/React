@@ -54,6 +54,7 @@ const ModuleSelect = ({
   configData,
   dispatch,
 }) => {
+  /*
   // Hardcoded Discovery module with null ID for admin panel
   const discoveryModule = {
     id: 1, // Changed to null for admin panel editing
@@ -79,6 +80,7 @@ const ModuleSelect = ({
       handleModuleSelect(defaultModule);
     }
   }, [allModules.length]); // Only run when modules load
+  */
 
   const handleModuleSelect = (item) => {
     const moduleToStore = {
@@ -91,10 +93,12 @@ const ModuleSelect = ({
     localStorage.setItem('selectedModule', JSON.stringify(moduleToStore));
   };
 
+
+  //change (data) to (allmodules)
   return (
     <Container p=".8rem" spacing={0}>
-      {allModules.length > 0 ? (
-        zoneWiseModule(allModules)?.map((item, index) => (
+      {data.length > 0 ? (
+        zoneWiseModule(data)?.map((item, index) => (
           <Tooltip
             title={item?.module_name}
             key={index}
@@ -135,14 +139,13 @@ const ModuleSelect = ({
 };
 
 const ModuleTitle = styled("span")(({ theme }) => ({
-  marginLeft: "auto",
   fontSize: "14px",
-  textAlign: "center",
   color: theme.palette.text.primary,
   fontWeight: "bold",
   whiteSpace: "nowrap",
-  textOverflow: "ellipsis",
-  lineHeight: "1.2",
+  overflow: "visible", // Changed from hidden
+  textOverflow: "clip", // Changed from ellipsis
+  flexShrink: 0, // Prevent text from shrinking
 }));
 
 export default ModuleSelect;

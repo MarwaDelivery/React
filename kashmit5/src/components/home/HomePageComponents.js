@@ -174,9 +174,9 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
             <BestReviewedItems />
           </Grid> */}
           {/* Here is All resturants filter  */}
-          <Grid item xs={12}>
+          {!isDiscovery && (<Grid item xs={12}>
             <StoresWithFilter />
-          </Grid>
+          </Grid>)}
         </Grid>
       </Box>
       <CustomStackFullWidth></CustomStackFullWidth>
