@@ -11,6 +11,7 @@ import useGetPolicyPage from "../../src/api-manage/hooks/react-query/useGetPolic
 import { CustomStackFullWidth } from "../../src/styled-components/CustomStyles.style";
 import { Skeleton } from "@mui/material";
 
+// {----API based code----}
 const Index = ({ configData }) => {
     const { t } = useTranslation();
     const { data, refetch, isFetching } = useGetPolicyPage("/privacy-policy");

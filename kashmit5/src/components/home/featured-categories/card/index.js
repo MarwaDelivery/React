@@ -12,8 +12,8 @@ export const Card = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  height: "100px",
-  width: "100px",
+  height: "100%",
+  width: "100%",
   borderRadius: "16px",
   padding: "5px",
   [theme.breakpoints.down("sm")]: {

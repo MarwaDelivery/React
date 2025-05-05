@@ -71,8 +71,13 @@ const ManageSearch = ({ zoneid, token, maxwidth }) => {
 
   return (
     <Box
-      sx={{ maxWidth: maxwidth === "true" ? "100%" : "21.9rem", width: "100%" }}
+      sx={{
+        maxWidth: maxwidth === "true" ? "100%" : "21.9rem",
+        width: "100%",
+        mx: "auto",
+      }}
     >
+
       <Box
         sx={{
           display: "flex",

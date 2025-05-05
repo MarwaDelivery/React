@@ -27,7 +27,7 @@ export const HomeComponentsWrapper = styled(Stack)(({ theme }) => ({
   gap: "8px",
 }));
 
-const HomePageComponents = ({ configData }) => {
+const HomePageComponents = ({ configData, isDiscovery }) => {
   const currentModuleType = getCurrentModuleType();
   const {
     data: categoryLists,
@@ -105,12 +105,42 @@ const HomePageComponents = ({ configData }) => {
           <Grid item maxWidth="90% !important" marginLeft="5% !important" xs={12} sx={{ marginTop: "10px" }}>
             <FeaturedCategories configData={configData} />
           </Grid>
+          {isDiscovery && (
+            <>
+              {categoryListsPopular?.length > 0 &&
+                categoryListsPopular?.map((item, index) => (
+                  <Grid key={index} item xs={12}>
+                    <CategoryStorePopular
+                      isFetchingg={isFetching}
+                      isSuccesss={isSuccess}
+                      item={item}
+                    />
+                  </Grid>
+                ))}
+
+              <Grid item xs={12}>
+                <NewArrivalStores />
+              </Grid>
+
+              {categoryLists?.length > 0 &&
+                categoryLists?.map((item, index) => (
+                  <Grid key={index} item xs={12}>
+                    <CategoryStore
+                      isFetching={isFetching}
+                      isSuccess={isSuccess}
+                      item={item}
+                    />
+                  </Grid>
+                ))}
+            </>
+          )}
 
 
-         {/*  <Grid item xs={12}>
+
+          {/*  <Grid item xs={12}>
             <PopularItemsNearby />
           </Grid> */}
-           {categoryListsPopular?.length > 0 &&
+          {/*   {categoryListsPopular?.length > 0 &&
             categoryListsPopular?.map((item, index) => {
               return (
                 <Grid key={index} item xs={12}>
@@ -121,14 +151,14 @@ const HomePageComponents = ({ configData }) => {
                   />
                 </Grid>
               );
-            })}
+            })}*/}
           <Grid item xs={12}>
             <RunningCampaigns />
           </Grid>
           <Grid item xs={12}>
-            <NewArrivalStores />
+            {/*<NewArrivalStores />*/}
           </Grid>
-          {categoryLists?.length > 0 &&
+          {/*  {categoryLists?.length > 0 &&
             categoryLists?.map((item, index) => {
               return (
                 <Grid key={index} item xs={12}>
@@ -140,9 +170,10 @@ const HomePageComponents = ({ configData }) => {
                 </Grid>
               );
             })}
-     {/*      <Grid item xs={12}>
+               <Grid item xs={12}>
             <BestReviewedItems />
           </Grid> */}
+          {/* Here is All resturants filter  */}
           <Grid item xs={12}>
             <StoresWithFilter />
           </Grid>

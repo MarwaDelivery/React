@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { getModuleId } from "../../../helper-functions/getModuleId";
 import FoodDetailModal from "../../food-details/foodDetail-modal/FoodDetailModal";
 import { setBanners } from "../../../redux/slices/storedData";
-import {getCurrentModuleType} from "helper-functions/getCurrentModuleType";
+import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
 
 /*const BannersWrapper = styled(Box)(({ theme }) => ({
   cursor: "pointer",
@@ -31,13 +31,14 @@ import {getCurrentModuleType} from "helper-functions/getCurrentModuleType";
 }));*/
 
 
-const BannersWrapper = styled(Box)(({ theme }) => ({
+const BannersWrapper = styled(Box)(({ theme, isSingle }) => ({
   cursor: "pointer",
   borderRadius: "10px",
-  width: "98%",
-  marginLeft: "2% !important",
-  height: "350px", // Default large screen
-
+  width: "98% !important", // Add !important
+  marginLeft: isSingle ? "auto !important" : "2% !important",
+  marginRight: isSingle ? "auto !important" : "0 !important",
+  height: "350px",
+  overflow: "hidden",
   [theme.breakpoints.down("lg")]: {
     height: "280px",
   },
@@ -45,12 +46,13 @@ const BannersWrapper = styled(Box)(({ theme }) => ({
     height: "220px",
   },
   [theme.breakpoints.down("sm")]: {
-    height: "160px",
+    height:"160px",
   },
   [theme.breakpoints.down("xs")]: {
     height: "120px",
   },
 }));
+
 
 const Banners = (props) => {
   const router = useRouter();
@@ -120,9 +122,8 @@ const Banners = (props) => {
             router.push({
               pathname: "/product/[id]",
               query: {
-                id: `${
-                  banner?.item?.slug ? banner?.item?.slug : banner?.item?.id
-                }`,
+                id: `${banner?.item?.slug ? banner?.item?.slug : banner?.item?.id
+                  }`,
                 module_id: `${getModuleId()}`,
               },
             });
@@ -136,63 +137,75 @@ const Banners = (props) => {
     //setBannerData(null);
   };
 
+  const SliderContainer = styled(Box)(({ theme, isSingle }) => ({
+    width: isSingle ? "50%" : "100%", // Container takes only needed width
+    margin: isSingle ? "0 auto" : "0", // Center container for single banner
+    [theme.breakpoints.down("sm")]: {
+      width: isSingle ? "70%" : "100%", // Slightly wider on mobile
+    },
+  }));
+  
   const settings = {
     dots: false,
-    infinite: true,
-    slidesToShow: 2,
+    infinite: bannersData.length > 1,
+    slidesToShow: bannersData.length >= 2 ? 2 : 1,
     responsive: [
       {
-        breakpoint: 900, 
+        breakpoint: 900,
         settings: {
           slidesToShow: 1,
+          infinite: bannersData.length > 1,
         },
       },
-    ],  
+    ],
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: bannersData.length > 1, // Only autoplay if multiple banners
     speed: 800,
     autoplaySpeed: 4000,
     cssEase: "linear",
-    };
+  };
   const isSmall = useMediaQuery("(max-width:1180px)");
 
   if (selectedModule?.module_type !== "food") {
     return null;
   }
-  
+
   return (
     <>
       <CustomStackFullWidth sx={{ mt: isSmall && "1.5rem" }}>
-        <Slider {...settings}>
-          {bannersData.length > 0 &&
-            bannersData?.map((item, index) => {
-              return (
-                <BannersWrapper
-                  key={index}
-                  className="slider-dots"
-                  onClick={() => handleBannerClick(item)}
-                >
-                  <CustomImageContainer
-                    src={`${
-                      item?.isCampaign
+        <SliderContainer isSingle={bannersData.length === 1}>
+          <Slider {...settings}>
+            {bannersData.length > 0 &&
+              bannersData?.map((item, index) => {
+                return (
+                  <BannersWrapper
+                    key={index}
+                    className="slider-dots"
+                    onClick={() => handleBannerClick(item)}
+                    isSingle={bannersData.length === 1}
+                  >
+                    <CustomImageContainer
+                      src={`${item?.isCampaign
                         ? configData?.base_urls?.campaign_image_url
                         : configData?.base_urls?.banner_image_url
-                    }/${item?.image}`}
-                    alt={item?.title}
-                    height="100%"
-                    width="95%"
-                    objectfit="cover"
-                    borderRadius="10px"
-                  />
-                </BannersWrapper>
-              );
-            })}
-          {isFetching && (
-            <BannersWrapper>
-              <Skeleton variant="rectangle" width="100%" height="100%" />
-            </BannersWrapper>
-          )}
-        </Slider>
+                        }/${item?.image}`}
+                      alt={item?.title}
+                      height="100%"
+                      width="100%" // Changed to 100% for both cases
+                      objectfit="cover"
+                      borderRadius="10px"
+                    />
+                  </BannersWrapper>
+                );
+              })}
+
+            {isFetching && (
+              <BannersWrapper>
+                <Skeleton variant="rectangle" width="100%" height="100%" />
+              </BannersWrapper>
+            )}
+          </Slider>
+          </SliderContainer>
       </CustomStackFullWidth>
       {openModal && foodBanner && (
         <FoodDetailModal
@@ -204,7 +217,7 @@ const Banners = (props) => {
         />
       )}
     </>
-  );  
+  );
 };
 
 Banners.propTypes = {};

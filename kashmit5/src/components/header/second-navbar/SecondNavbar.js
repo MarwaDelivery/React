@@ -168,7 +168,7 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
                     badgeCount={totalWishList}
                   />
                 )}
-                {moduleType !== "parcel" && location && <Cart />}
+                {moduleType !== "parcel" && location && router.pathname !== "/" && <Cart />}
                 {token ? (
                   <IconButton
                     ref={anchorRef}

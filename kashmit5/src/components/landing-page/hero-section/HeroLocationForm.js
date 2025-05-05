@@ -45,6 +45,7 @@ const HeroLocationForm = () => {
   const [placeDescription, setPlaceDescription] = useState(undefined);
   const [placeDetailsEnabled, setPlaceDetailsEnabled] = useState(false);
   const [openModuleSelection, setOpenModuleSelection] = useState(false);
+  const [selectedPlaceFromSearch, setSelectedPlaceFromSearch] = useState(false);
   const dispatch = useDispatch();
   const handleClose = () => {
     setOpen(false);
@@ -101,8 +102,9 @@ const HeroLocationForm = () => {
     if (value) {
       setPlaceId(value?.place_id);
       setPlaceDescription(value?.description);
-      setZoneIdEnabled(false);
+      setZoneIdEnabled(true);
       setGeoLocationEnable(true);
+      setSelectedPlaceFromSearch(true);
 
     }
     setPlaceDetailsEnabled(true);
@@ -256,6 +258,28 @@ const HeroLocationForm = () => {
     router,
   ]);
 
+  useEffect(() => {
+    if (
+      selectedPlaceFromSearch &&
+      location &&
+      currentLocation &&
+      zoneData?.zone_id
+    ) {
+      localStorage.setItem("location", currentLocation);
+      localStorage.setItem("currentLatLng", JSON.stringify(location));
+      localStorage.setItem("zoneid", zoneData.zone_id);
+  
+      if (getToken()) {
+        wishlistRefetch();
+      }
+  
+      toast.success(t("New location has been set."));
+      router.push("/home");
+      setSelectedPlaceFromSearch(false); // reset
+    }
+  }, [selectedPlaceFromSearch, location, currentLocation, zoneData, wishlistRefetch, router, t]);
+  
+
   return (
     <>
       <Stack
@@ -293,15 +317,16 @@ const HeroLocationForm = () => {
               fromparcel="false"
             // setLocationEnable ={setLocationEnable}
             />
-
-            {/* <StyledButton
+            {/*
+             <StyledButton
               fullwidth="false"
               // language_direction={language_direction}
               radiuschange="true"
               onClick={() => setLocationEnable()}
             >
               {t("Set Location")}
-            </StyledButton>  */}
+            </StyledButton> 
+             */}
           </CustomStackFullWidth>
           {/*   <Typography pt="10px">{t("Or")}</Typography>
            <StyledButton fullwidth="true" onClick={handleOpen}>{t("Pick Form Map")} </StyledButton> */}

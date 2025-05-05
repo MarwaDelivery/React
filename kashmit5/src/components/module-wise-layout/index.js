@@ -135,7 +135,10 @@ const ModuleWiseLayout = ({ configData }) => {
       {selectedModule && selectedModule?.module_type === "parcel" ? (
         <PercelComponents />
       ) : (
-        <HomePageComponents key={rerender} configData={configData} />
+        <HomePageComponents   key={rerender}
+        configData={configData}
+        isDiscovery={selectedModule?.isDiscovery}
+      />
       )}
     </CustomStackFullWidth>
   );

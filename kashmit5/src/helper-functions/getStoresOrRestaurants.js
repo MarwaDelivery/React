@@ -9,5 +9,7 @@ export const getStoresOrRestaurants = () => {
     } else {
       return t("Stores");
     }
+  } else {
+    return t("Discovery");
   }
 };
