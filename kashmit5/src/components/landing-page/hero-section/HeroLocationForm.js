@@ -77,6 +77,7 @@ const HeroLocationForm = () => {
   const handleAgreeLocation = () => {
     if (coords) {
       setLocation({ lat: coords?.latitude, lng: coords?.longitude });
+     // localStorage.setItem("currentLatLng", JSON.stringify(setLocation));
       setOpenLocation(false);
       setShowCurrentLocation(true);
       setGeoLocationEnable(true);
@@ -204,7 +205,7 @@ const HeroLocationForm = () => {
 
       //toast.success(t("New location has been set."));
       //setOpenModuleSelection(true);
-      router.push("/home/discovery");
+      router.push("/home");
       // if (!selectedModule) {
       //   setOpenModuleSelection(true);
       // } else {
@@ -220,7 +221,7 @@ const HeroLocationForm = () => {
   const handleCloseModuleModal = (item) => {
     if (item) {
       toast.success(t(module_select_success));
-      router.push("/discovery", undefined, { shallow: true });
+      router.push("/home", undefined, { shallow: true });
     }
     setOpenModuleSelection(false);
   };
@@ -307,7 +308,7 @@ const HeroLocationForm = () => {
   
       toast.success(t("New location has been set."));
       setLocationSet(true); // ✅ Prevents future triggers
-      router.push("/discovery");
+      router.push("/home");
     }
   }, [
     coords,

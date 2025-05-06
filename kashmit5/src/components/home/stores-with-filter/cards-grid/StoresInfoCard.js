@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { IconButton, Paper, styled, Typography, useTheme } from "@mui/material";
 import { CustomStackFullWidth } from "../../../../styled-components/CustomStyles.style";
@@ -27,7 +27,15 @@ import CustomDialogConfirm from "../../../custom-dialog/confirm/CustomDialogConf
 import Link from "next/link";
 import ClosedNow from "../../../closed-now";
 import { getNumberWithConvertedDecimalPoint } from "../../../../utils/CustomFunctions";
-import {getCurrentModuleType} from "helper-functions/getCurrentModuleType";
+import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
+import { calculateDistanceInMeters } from "../../../../utils/geoUtils";
+import coords from "components/landing-page/hero-section/HeroLocationForm";
+
+
+
+
+
+
 const CardWrapper = styled(Paper)(({ theme }) => ({
   padding: "2rem 1rem",
   height: "100%",
@@ -63,11 +71,11 @@ export const HeartWrapper = styled(IconButton)(({ theme, top, right }) => ({
 }));
 
 export const isDeliveryFree = (data) => {
-  console.log({data});
-  
+  console.log(data);
+
   if (
-   ( data?.free_delivery_set_by_admin === 1 && data?.free_delivery_required_amount_status===1) || (data?.free_delivery_set_by_admin === 1 && data?.
-    free_delivery_required_km_upto_status
+    (data?.free_delivery_set_by_admin === 1 && data?.free_delivery_required_amount_status === 1) || (data?.free_delivery_set_by_admin === 1 && data?.
+      free_delivery_required_km_upto_status
     )
   ) {
     return true;
@@ -75,6 +83,43 @@ export const isDeliveryFree = (data) => {
     return false;
   }
 };
+export const getDeliveryFeeStatus = (data, distance) => {
+  console.log("Stores info",data)
+  // Only proceed if free delivery is enabled by admin
+  if (data?.free_delivery_set_by_admin !== 1) return null;
+
+  // Convert distance to km if provided
+  const distanceInKm = distance ? distance / 1000 : null;
+
+  // Check if within free delivery distance
+  const withinDistance = 
+    data?.free_delivery_required_km_upto_status &&
+    distanceInKm !== null &&
+    distanceInKm <= data?.free_delivery_required_km_upto;
+
+  // Check if has minimum amount requirement
+  const hasMinAmountRequirement = data?.free_delivery_required_amount_status === 1;
+
+  // Priority 1: If within distance, show free delivery
+  if (withinDistance) {
+    return t("0 HUF delivery fee"); // Return string directly
+  }
+
+  // Priority 2: If has min amount requirement (but not within distance)
+  if (hasMinAmountRequirement) {
+    // Special case: If required amount is 0, treat as free
+    if (data?.free_delivery_required_amount === 0) {
+      return t("0 HUF delivery fee"); // Return string directly
+    }
+    return t("0 HUF Delivery Fee (Spend {{amount}} HUF)", {
+      amount: data?.free_delivery_required_amount,
+    }); // Return string directly
+  }
+
+  // No free delivery conditions met
+  return null;
+};
+
 /*export const isCoupon = (data) => {
   console.log({data});
   
@@ -90,12 +135,78 @@ export const isDeliveryFree = (data) => {
 };*/
 
 const StoresInfoCard = (props) => {
-  const { data, wishlistcard } = props;
+  const {data, wishlistcard} = props;
+  const [distanceToCustomer, setDistanceToCustomer] = useState(null);
+
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("currentLatLng");
+      if (stored) {
+        try {
+          const { lat, lng } = JSON.parse(stored);
+          const storeLat = data?.latitude;
+          const storeLng = data?.longitude;
+          console.log("StoreLat", storeLat);
+          console.log("StoreLng", storeLng);
+          console.log("customerlat", lat);
+          console.log("customerlng", lng);
+  
+          if (
+            lat != null &&
+            lng != null &&
+            storeLat != null &&
+            storeLng != null
+          ) {
+            const distance = calculateDistanceInMeters(
+              lat,
+              lng,
+              storeLat,
+              storeLng
+            );
+            setDistanceToCustomer(distance);
+            console.log("distance",distance)
+          }
+        } catch (error) {
+          console.error("Failed to parse currentLatLng from localStorage:", error);
+        }
+      }
+    }
+  }, [data]);
+ /* useEffect(() => {
+    const customerLat = latitude;
+    const customerLng = longitude;
+    const storeLat = data?.latitude;
+    const storeLng = data?.longitude;
+    console.log("StoreLat",storeLat)
+    console.log("StoreLng",storeLng)
+    console.log("customerlat",customerLat)
+    if (
+      customerLat != null &&
+      customerLng != null &&
+      storeLat != null &&
+      storeLng != null
+    ) {
+      const distance = calculateDistanceInMeters(
+        customerLat,
+        customerLng,
+        storeLat,
+        storeLng
+      );
+      setDistanceToCustomer(distance); // Set the calculated distance
+    }
+  }, [data]);
+  */
+
+
   const id = data?.id ? data?.id : data?.slug;
   const { configData } = useSelector((state) => state.configData);
   const store_image_url = `${configData?.base_urls?.store_image_url}`;
   const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
- 
+  const deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
+
+
+
   const [openModal, setOpenModal] = React.useState(false);
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -144,7 +255,25 @@ const StoresInfoCard = (props) => {
 
   return (
     <Stack sx={{ position: "relative", height: "100%" }}>
-      {isDeliveryFree(data) && (
+      {/* Delivery Fee Badge */}
+      {deliveryStatus && (
+        <Stack
+        sx={{
+          position: "absolute",
+          top: "4%",
+          backgroundColor: theme.palette.primary.main,
+          padding: "5px",
+          zIndex: "99",
+          borderRadius: "5px",
+          color: "white",
+          fontSize: "12px",
+          fontWeight: "bold",
+        }}
+        >
+         {deliveryStatus}
+        </Stack>
+      )}
+      {deliveryStatus === "free" && (
         <Stack
           sx={{
             position: "absolute",
@@ -159,9 +288,11 @@ const StoresInfoCard = (props) => {
           }}
         >
           {t("0 HUF delivery fee")}
+
         </Stack>
       )}
-   {/*      /*{isCoupon(data) && (
+
+      {/*      /*{isCoupon(data) && (
         <Stack
           sx={{
             position: "absolute",
@@ -232,8 +363,8 @@ const StoresInfoCard = (props) => {
               <CustomImageContainer
                 src={`https://panel.marwa.hu/storage/app/public/store/cover/${data?.cover_photo}`}
                 alt={data?.name}
-            
-               height="180px"
+
+                height="180px"
                 width="100%"
                 objectfit="cover"
                 borderRadius={`10px`}
@@ -246,7 +377,7 @@ const StoresInfoCard = (props) => {
             </Box>
           </CustomStackFullWidth>
           <Box
-          margin="10px"
+            margin="10px"
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -277,9 +408,9 @@ const StoresInfoCard = (props) => {
 
               <RatingStar fontSize="16px" color="warning.dark" />
               <Typography fontWeight="bold">
-               
-                
-                 {data?.avg_rating?.toFixed(1)} 
+
+
+                {data?.avg_rating?.toFixed(1)}
               </Typography>
             </Stack>
           </Box>

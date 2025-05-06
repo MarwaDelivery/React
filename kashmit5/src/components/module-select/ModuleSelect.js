@@ -88,7 +88,7 @@ const ModuleSelect = ({
 
   return (
     <Container p=".8rem" spacing={0}>
-      {/* Discovery Page Tab */}
+      {/* Discovery Page Tab 
       <Tooltip title="Discovery" placement="bottom">
         <ModuleContainer
           selected={router.pathname === "/discovery"}
@@ -103,7 +103,7 @@ const ModuleSelect = ({
           />
           <ModuleTitle>{discoveryModule?.module_name}</ModuleTitle>
         </ModuleContainer>
-      </Tooltip>
+      </Tooltip>*/}
 
       {/* API Modules */}
       {filteredModules.length > 0 ? (
