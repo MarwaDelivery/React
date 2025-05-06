@@ -204,7 +204,7 @@ const HeroLocationForm = () => {
 
       //toast.success(t("New location has been set."));
       //setOpenModuleSelection(true);
-      router.push("/home");
+      router.push("/home/discovery");
       // if (!selectedModule) {
       //   setOpenModuleSelection(true);
       // } else {
@@ -220,7 +220,7 @@ const HeroLocationForm = () => {
   const handleCloseModuleModal = (item) => {
     if (item) {
       toast.success(t(module_select_success));
-      router.push("/home", undefined, { shallow: true });
+      router.push("/discovery", undefined, { shallow: true });
     }
     setOpenModuleSelection(false);
   };
@@ -307,7 +307,7 @@ const HeroLocationForm = () => {
   
       toast.success(t("New location has been set."));
       setLocationSet(true); // ✅ Prevents future triggers
-      router.push("/home");
+      router.push("/discovery");
     }
   }, [
     coords,

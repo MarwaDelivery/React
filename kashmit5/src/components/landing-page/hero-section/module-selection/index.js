@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomModal from "../../../modal";
+import ModuleSelect from "../../../module-select/ModuleSelect";
 import {
   Grid,
   Paper,

@@ -3,6 +3,7 @@ import { Skeleton, styled, Tooltip } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import CustomImageContainer from "../CustomImageContainer";
 import { setSelectedModule } from "../../redux/slices/utils";
+import { useRouter } from "next/router"; // For redirecting to discovery
 
 const Container = styled(Stack)(({ theme }) => ({
   zIndex: "999",
@@ -40,11 +41,10 @@ export const zoneWiseModule = (data) => {
   if (typeof window !== "undefined") {
     currentZoneIds = JSON.parse(localStorage.getItem("zoneid"));
   }
-  const result = data.filter((moduleItem) => {
+  return data.filter((moduleItem) => {
     const zoneIds = moduleItem?.zones?.map((zone) => zone.id);
     return currentZoneIds?.some((id) => zoneIds?.includes(id));
   });
-  return result;
 };
 
 const ModuleSelect = ({
@@ -54,62 +54,65 @@ const ModuleSelect = ({
   configData,
   dispatch,
 }) => {
-  /*
-  // Hardcoded Discovery module with null ID for admin panel
+  const router = useRouter();
+
+  // Discovery "page" tab config
   const discoveryModule = {
-    id: 1, // Changed to null for admin panel editing
+    id: null,
     module_name: "Discovery",
     module_type: "discovery",
     icon: "2025-01-23-67923d0aad327.png",
-    zones: data?.[0]?.zones || [{ id: 15 }],
-    status: "1",
-    isDiscovery: true,
-    stores_count: 0,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    is_new: true // Add flag to indicate this is a new module
+    isDiscovery: true
   };
 
-  // Combine API modules with Discovery module
-  const allModules = [ discoveryModule, ...(data || [])];
+  const filteredModules = zoneWiseModule(data || []);
 
   React.useEffect(() => {
-    if (allModules.length > 0 && !selectedModule) {
-      // Set Discovery as default if available
-      const defaultModule = allModules.find(module => module.isDiscovery) || allModules[0];
-      handleModuleSelect(defaultModule);
+    if (!selectedModule && filteredModules.length > 0) {
+      const defaultModule = filteredModules[0];
+      dispatch(setSelectedModule(defaultModule));
+      moduleSelectHandler(defaultModule);
+      localStorage.setItem('selectedModule', JSON.stringify(defaultModule));
     }
-  }, [allModules.length]); // Only run when modules load
-  */
+  }, [filteredModules.length]);
 
   const handleModuleSelect = (item) => {
-    const moduleToStore = {
-      ...item,
-      id: item.isDiscovery ? null : item.id
-    };
-    
-    dispatch(setSelectedModule(moduleToStore));
-    moduleSelectHandler(moduleToStore);
-    localStorage.setItem('selectedModule', JSON.stringify(moduleToStore));
+    if (item.isDiscovery) {
+      router.push("/discovery"); // Redirect to Discovery page
+    } else {
+      dispatch(setSelectedModule(item));
+      moduleSelectHandler(item);
+      localStorage.setItem('selectedModule', JSON.stringify(item));
+    }
   };
 
-
-  //change (data) to (allmodules)
   return (
     <Container p=".8rem" spacing={0}>
-      {data.length > 0 ? (
-        zoneWiseModule(data)?.map((item, index) => (
-          <Tooltip
-            title={item?.module_name}
-            key={index}
-            placement="bottom"
-          >
+      {/* Discovery Page Tab */}
+      <Tooltip title="Discovery" placement="bottom">
+        <ModuleContainer
+          selected={router.pathname === "/discovery"}
+          onClick={() => handleModuleSelect(discoveryModule)}
+        >
+          <CustomImageContainer
+            src={`${configData?.base_urls?.module_image_url}/${discoveryModule?.icon}`}
+            width="36px"
+            height="36px"
+            alt={discoveryModule?.module_name}
+            objectFit="contained"
+          />
+          <ModuleTitle>{discoveryModule?.module_name}</ModuleTitle>
+        </ModuleContainer>
+      </Tooltip>
+
+      {/* API Modules */}
+      {filteredModules.length > 0 ? (
+        filteredModules.map((item, index) => (
+          <Tooltip title={item?.module_name} key={index} placement="bottom">
             <ModuleContainer
               selected={
-                item?.isDiscovery 
-                ? selectedModule?.isDiscovery
-                : item?.module_type === selectedModule?.module_type &&
-                  item?.id === selectedModule?.id            
+                item?.module_type === selectedModule?.module_type &&
+                item?.id === selectedModule?.id
               }
               onClick={() => handleModuleSelect(item)}
             >
@@ -126,12 +129,7 @@ const ModuleSelect = ({
         ))
       ) : (
         [...Array(5)].map((_, index) => (
-          <Skeleton
-            key={index}
-            width="40px"
-            height="40px"
-            variant="rectangle"
-          />
+          <Skeleton key={index} width="40px" height="40px" variant="rectangle" />
         ))
       )}
     </Container>
@@ -143,9 +141,9 @@ const ModuleTitle = styled("span")(({ theme }) => ({
   color: theme.palette.text.primary,
   fontWeight: "bold",
   whiteSpace: "nowrap",
-  overflow: "visible", // Changed from hidden
-  textOverflow: "clip", // Changed from ellipsis
-  flexShrink: 0, // Prevent text from shrinking
+  overflow: "visible",
+  textOverflow: "clip",
+  flexShrink: 0,
 }));
 
 export default ModuleSelect;
