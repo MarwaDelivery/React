@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Skeleton, styled, Tooltip } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import CustomImageContainer from "../CustomImageContainer";
 import { setSelectedModule } from "../../redux/slices/utils";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router"; // if using Next.js routing
-
+import { useRouter } from "next/router";
 
 const Container = styled(Stack)(({ theme }) => ({
   zIndex: "999",
@@ -27,7 +25,7 @@ const ModuleContainer = styled(Box)(({ theme, selected }) => ({
   borderRadius: "11px",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center", // Change this to center the content
+  justifyContent: "center",
   borderColor: selected
     ? theme.palette.primary.main
     : theme.palette.background.paper,
@@ -57,71 +55,58 @@ const ModuleSelect = ({
   configData,
   dispatch,
 }) => {
-  const router = useRouter(); // add this line
-  // Hardcoded Discovery module with null ID for admin panel
-  const discoveryModule = {
-    id: null, // Changed to null for admin panel editing
-    module_name: "Discovery",
-    module_type: "discovery",
-    icon: "/discovery_icon.png",
-    zones: data?.[0]?.zones || [{ id: 15 }],
-    status: "1",
-    isDiscovery: true,
-    stores_count: 0,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    is_new: true // Add flag to indicate this is a new module
-  };
+  const router = useRouter();
 
-  // Combine API modules with Discovery module
-  const allModules = [discoveryModule, ...(data || [])];
+  const filteredModules = zoneWiseModule(data);
 
+  // Auto-select first module if none selected
   useEffect(() => {
-    const zoneFilteredModules = zoneWiseModule(allModules);
-    const discoveryModule = zoneFilteredModules?.find((mod) => mod.isDiscovery);
+    const { module_id, moduleType } = router.query;
 
-    if (discoveryModule) {
-      dispatch(setSelectedModule(discoveryModule));
-      moduleSelectHandler(discoveryModule);
+    if (!module_id || !moduleType) {
+      const fallbackModule = filteredModules?.[0];
+      if (fallbackModule) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              module_id: fallbackModule.id,
+              moduleType: fallbackModule.module_type,
+            },
+          },
+          undefined,
+          { shallow: true }
+        );
+
+        dispatch(setSelectedModule(fallbackModule));
+        moduleSelectHandler(fallbackModule);
+      }
     }
-  }, []);
-
-
+  }, [router.query, filteredModules]);
 
   const handleModuleSelect = (item) => {
-    if (item.isDiscovery) {
-      // For Discovery module, send null ID to server
-      const discoveryDataForServer = {
-        ...item,
-        id: null, // Ensure ID is null
-        combinedData: {
-          markets: [],
-          restaurants: []
+    dispatch(setSelectedModule(item));
+    moduleSelectHandler(item);
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          module_id: item.id,
+          moduleType: item.module_type,
         },
-        request_type: "create" // Indicate this is a create request
-      };
-
-      dispatch(setSelectedModule(discoveryDataForServer));
-      moduleSelectHandler(discoveryDataForServer);
-
-      // Optionally: Send to server immediately
-      // sendToServer(discoveryDataForServer);
-    } else {
-      // Normal module handling
-      dispatch(setSelectedModule(item));
-      moduleSelectHandler(item);
-    }
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   return (
     <Container p=".8rem" spacing={0}>
-      {allModules.length > 0 ? (
-        zoneWiseModule(allModules)?.map((item, index) => (
-          <Tooltip
-            title={item?.module_name}
-            key={index}
-            placement="bottom"
-          >
+      {filteredModules.length > 0 ? (
+        filteredModules.map((item, index) => (
+          <Tooltip title={item?.module_name} key={index} placement="bottom">
             <ModuleContainer
               selected={
                 item?.module_type === selectedModule?.module_type &&
@@ -130,11 +115,7 @@ const ModuleSelect = ({
               onClick={() => handleModuleSelect(item)}
             >
               <CustomImageContainer
-                src={
-                  item?.isDiscovery
-                    ? item.icon // static path you manually set
-                    : `${configData?.base_urls?.module_image_url}/${item?.icon}`
-                }
+                src={`${configData?.base_urls?.module_image_url}/${item?.icon}`}
                 width="36px"
                 height="36px"
                 alt={item?.module_name}
@@ -146,12 +127,7 @@ const ModuleSelect = ({
         ))
       ) : (
         [...Array(5)].map((_, index) => (
-          <Skeleton
-            key={index}
-            width="40px"
-            height="40px"
-            variant="rectangle"
-          />
+          <Skeleton key={index} width="40px" height="40px" variant="rectangle" />
         ))
       )}
     </Container>
@@ -167,4 +143,5 @@ const ModuleTitle = styled("span")(({ theme }) => ({
   textOverflow: "clip",
   flexShrink: 0,
 }));
+
 export default ModuleSelect;

@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import { Box, margin, padding, Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import CustomImageContainer from "../CustomImageContainer";
 import { alpha, Card, CardMedia, Typography, useTheme } from "@mui/material";
 import { CustomButtonPrimary } from "styled-components/CustomButtons.style";
@@ -41,85 +41,48 @@ import ModuleModal from "./ModuleModal";
 export const CardWrapper = styled(Card)(
   ({ theme, cardheight, horizontalcard, wishlistcard }) => ({
     cursor: "pointer",
-    maxWidth: horizontalcard === "true" ? "100%" : "320px",
+    maxWidth: horizontalcard === "true" ? "100%" : "320x",
+
     margin: wishlistcard === "true" ? "0rem" : "1rem",
     borderRadius: "10px",
-    height: cardheight || "370px", // Default large height
-
+    height: cardheight ? cardheight : "220px",
     "&:hover": {
       boxShadow: "5px 0px 20px rgba(0, 54, 85, 0.15)",
     },
-
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
+      height: cardheight ? cardheight : "150px",
       maxWidth: "100%",
-      height: cardheight || "300px", // slightly reduced for md
+    },
+    [theme.breakpoints.up("sm")]: {
+      height: cardheight ? cardheight : "330px",
+      //paddingBottom: horizontalcard === "true" && "10px",
+    },
+    [theme.breakpoints.up("md")]: {
+      height: cardheight ? cardheight : "370px",
     },
   })
 );
-
-/*const CustomCardMedia = styled(CardMedia)(({ theme, horizontalcard }) => ({
+const CustomCardMedia = styled(CardMedia)(({ theme, horizontalcard }) => ({
   position: "relative",
   overflow: "hidden",
-  paddingTop: "6px",
-  borderRadius: horizontalcard === "true" ? "0 10px 10px 0" : "10px 10px 0 0",
+  padding: "0",
+  borderRadius: horizontalcard === "true" ? "0x 10px" : "10px 10px 0 0",
   height: horizontalcard === "true" ? "100%" : "180px",
-  width: horizontalcard === "true" ? "250px" : "100%",
-  backgroundColor: horizontalcard === "true" ? theme.palette.grey[100] : "white",
+  width: horizontalcard === "true" && "230px",
 
-  [theme.breakpoints.down("md")]: {
-    width: horizontalcard === "true" ? "200px" : "100%", // medium media width
-    height: horizontalcard === "true" ? "100%" : "150px",
-  },
+  backgroundColor:"white",
+   // horizontalcard === "true" ? theme.palette.neutral[100] : "none",
+
   [theme.breakpoints.down("sm")]: {
-    width: horizontalcard === "true" ? "260px" : "100%", // smaller media width
-    marginTop:"2px", //9px
-  },
-}));*/
-
-const CustomCardMedia = styled("div")(({ theme, horizontalcard }) => ({
-  position: "relative",
-  overflow: "hidden",
-  borderRadius: horizontalcard === "true" ? "0 10px 10px 0" : "10px 10px 0 0",
-  backgroundColor: horizontalcard === "true" ? theme.palette.grey[100] : "white",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-
-  width: horizontalcard === "true" ? "250px" : "100%",
-  height: horizontalcard === "true" ? "100%" : "180px",
-  aspectRatio: horizontalcard === "true" ? "unset" : "16 / 9", // optional aspect ratio
-
-  [theme.breakpoints.down("md")]: {
-    width: horizontalcard === "true" ? "200px" : "100%",
-    height: horizontalcard === "true" ? "100%" : "150px",
-  },
-  [theme.breakpoints.down("sm")]: {
-    width: horizontalcard === "true" ? "260px" : "100%",
-    marginTop: "2px",
+    width: "170px",
+    height: "100%",
   },
 }));
-
 export const CustomCardButton = styled(CustomButtonPrimary)(
   ({ theme, disabled }) => ({
-    position: "absolute",
-    bottom: "17px",
     background: disabled
       ? alpha(theme.palette.secondary.light, 0.3)
       : theme.palette.secondary.light,
-
-    fontSize: "0.875rem", // Default size
-    padding: "8px 16px",  // Default padding
-
-    [theme.breakpoints.down("md")]: {
-      fontSize: "0.75rem",       // Slightly smaller text
-      padding: "6px 12px",       // Match small screen spacing
-      minWidth: "unset",         // Avoid stretching
-    },
-
-    [theme.breakpoints.up("lg")]: {
-      fontSize: "0.875rem",      // Restore to default for large
-      padding: "8px 16px",
-    },
   })
 );
 
@@ -146,7 +109,7 @@ const ProductCard = (props) => {
   const { t } = useTranslation();
   const p_off = t("% off");
   const off = t("Off");
-  useEffect(() => { }, [state.clearCartModal]);
+  useEffect(() => {}, [state.clearCartModal]);
 
   const handleClearCartModalOpen = () =>
     dispatch({ type: ACTION.setClearCartModal, payload: true });
@@ -192,15 +155,15 @@ const ProductCard = (props) => {
             module_id: item?.module_id,
           },
         },
-
+       
       );
     }
   };
   const handleClose = () => {
     dispatch({ type: ACTION.setOpenModal, payload: false });
   };
-  console.log({ item });
-
+  console.log({item});
+  
 
   useEffect(() => {
     if (item) {
@@ -278,7 +241,7 @@ const ProductCard = (props) => {
               module_id: `${getModuleId()}`,
             },
           },
-
+         
         );
       } else {
         e.stopPropagation();
@@ -358,29 +321,22 @@ const ProductCard = (props) => {
           justifyContent="space-between"
           height="100%"
           sx={{
-            backgroundColor: "white",
-            // horizontalcard === "true" &&
-            // changed_bg === "true" &&
-            // "primary.semiLight",
+            backgroundColor:"white",
+             // horizontalcard === "true" &&
+             // changed_bg === "true" &&
+             // "primary.semiLight",
             position: "relative",
           }}
         >
-
+          
           <CustomCardMedia horizontalcard={horizontalcard}>
             {handleBadge()}
             <CustomImageContainer
               src={`${imageBaseUrl}/${item?.image}`}
-              //src={"/sample2.jpg"}
               alt={item?.title}
               height="100%"
               width="100%"
-              objectfit="cover"
-              style={{
-                borderRadius: "inherit",
-                objectFit: "cover",
-                height: "100%",
-                width: "100%",
-              }}
+              obejctfit="contain"
             />
             {item?.module?.module_type === "food" && (
               <ProductsUnavailable product={item} />
@@ -397,19 +353,19 @@ const ProductCard = (props) => {
             justifyContent="space-between"
             height="160px !important"
             backgroundColor="white"
-          /* sx={{
-            background: (theme) =>
-              getCurrentModuleType() === "food"
-                ? theme.palette.foodCardColor
-                : horizontalcard === "true" && changed_bg === "true"
-                ? "primary.semiLight"
-                : horizontalcard === "false" && changed_bg === "true"
-                ? theme.palette.primary.semiLight
-                : theme.palette.background.custom3,
-          }} */
+            /* sx={{
+              background: (theme) =>
+                getCurrentModuleType() === "food"
+                  ? theme.palette.foodCardColor
+                  : horizontalcard === "true" && changed_bg === "true"
+                  ? "primary.semiLight"
+                  : horizontalcard === "false" && changed_bg === "true"
+                  ? theme.palette.primary.semiLight
+                  : theme.palette.background.custom3,
+            }} */
           >
             <Box
-              backgroundColor="white"
+            backgroundColor="white"
               sx={{
                 padding: {
                   xs: "10px 5px 8px 15px",
@@ -420,8 +376,8 @@ const ProductCard = (props) => {
                 },
               }}
             >
-
-
+              
+     
               <Typography
                 variant={horizontalcard === "true" ? "subtitle2" : "h6"}
                 marginBottom="4px"
@@ -444,9 +400,9 @@ const ProductCard = (props) => {
                 fontSize="10.8523px"
                 marginBottom="6px"
                 height="30px"
-                overflow="hidden"
+                overflow= "hidden"
                 sx={{
-                  //    color: (theme) => theme.palette.neutral[500],
+              //    color: (theme) => theme.palette.neutral[500],
                 }}
               >
                 {item?.description}
@@ -454,7 +410,7 @@ const ProductCard = (props) => {
               <Typography
                 variant="h5"
                 //display="flex"
-                textAlign="right !important"
+                 textAlign="right !important"
                 sx={{
                   fontSize: { xs: "13px", sm: "18px" },
                   color: (theme) => theme.palette.neutral[500],
@@ -505,12 +461,12 @@ const ProductCard = (props) => {
                   </>
                 )}
               </Typography>
-
-
-
+              
+           
+          
             </Box>
             <Box
-              backgroundColor="white"
+            backgroundColor="white"
               sx={{
                 padding: {
                   xs: "10px 5px 8px 15px",
@@ -572,3 +528,4 @@ const ProductCard = (props) => {
 ProductCard.propTypes = {};
 
 export default ProductCard;
+  
