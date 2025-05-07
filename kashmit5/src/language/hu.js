@@ -535,6 +535,7 @@ export const hungarian = {
   "Delivery Fee": "Szállítási költség",
   "Share your opinion": "Ossza meg véleményét",
   "Rate the food": "Értékelje az ételt",
+  "delivery_fee_with_amount": "0 Ft szállítási díj (minimum {{amount}} Ft költésnél)",
   Quantity: "Mennyiség",
   "Rate the deliveryman": "Értékeld a kézbesítőt",
   "I agree that placing the order places me under Terms and Conditions & Privacy Policies":

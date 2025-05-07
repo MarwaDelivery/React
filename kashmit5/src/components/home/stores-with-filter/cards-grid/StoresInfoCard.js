@@ -111,9 +111,10 @@ export const getDeliveryFeeStatus = (data, distance) => {
     if (data?.free_delivery_required_amount === 0) {
       return t("0 HUF delivery fee"); // Return string directly
     }
-    return t("0 HUF delivery fee (Spend {{amount}} HUF)", {
+    return t("delivery_fee_with_amount", {
       amount: data?.free_delivery_required_amount,
-    }); // Return string directly
+    });
+     // Return string directly
   }
 
   // No free delivery conditions met

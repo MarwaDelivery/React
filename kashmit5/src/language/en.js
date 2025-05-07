@@ -533,6 +533,7 @@ export const english = {
   "Delivery Fee": "Delivery Fee",
   "Share your opinion": "Share your opinion",
   "Rate the food": "Rate the food",
+  "delivery_fee_with_amount": "0 HUF delivery fee (Spend {{amount}} HUF)",
   Quantity: "Quantity",
   "Rate the deliveryman": "Rate the deliveryman",
   "I agree that placing the order places me under Terms and Conditions & Privacy Policies":
