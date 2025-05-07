@@ -166,9 +166,6 @@ const Banners = (props) => {
   };
   const isSmall = useMediaQuery("(max-width:1180px)");
 
-  if (selectedModule?.module_type !== "food") {
-    return null;
-  }
 
   return (
     <>

@@ -101,12 +101,13 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
       )}
       <Box width="92%" marginLeft="4%">
         <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Banners />
-          </Grid>
           <Grid item maxWidth="90% !important" marginLeft="5% !important" xs={12} sx={{ marginTop: "10px" }}>
             <FeaturedCategories configData={configData} />
           </Grid>
+          {isDiscovery && (
+            <Grid item xs={12}> 
+              <Banners />
+            </Grid>)}
           {isDiscovery && (
             <>
               {categoryListsPopular?.length > 0 &&
