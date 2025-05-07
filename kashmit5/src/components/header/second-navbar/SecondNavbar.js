@@ -94,129 +94,129 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
   };
   return (
     <Box
-    sx={{ width: "100%", backgroundColor: (scrollPosition !== 0 || toggled) && theme.palette.neutral[100] }}>
-    <CustomContainer>
-      <Toolbar
-        disableGutters={true}
-        sx={{
-          backgroundColor:
-            (scrollPosition !== 0 || toggled) && theme.palette.neutral[100],
-          borderRadius: "0px 0px 15px 15px",
-          paddingX: "0px",
-          paddingY: { lg: "0px" },
-          overflow: "hidden",            // 👈 ensures children respect border radius
-          width: "100%",                  // 👈 prevent full width so curve is visible
-          mx: "auto",                    // 👈 center it horizontally
-      
-        }}
-        style={{ zIndex: 1251 }}
-      >
-        <NoSsr>
-          <CustomStackFullWidth
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            //spacing={2}
-            sx={{
-              paddingBottom: isSmall && "10px",
-              paddingTop: isSmall && "10px",
-              marginLeft: "0 !important",
-            }}
-          >
-            <Stack direction="row" alignItems="center">
-              {!isSmall && (
-                <LogoSide
-                  width="110px"
-                  height="50px"
-                  configData={configData}
-                  objectFit="contain"
-                />
-              )}
-              {!isSmall && location && (
-                <NavLinks t={t} zoneid="zoneid" moduleType={moduleType} />
-              )}
-            </Stack>
+      sx={{ width: "100%", backgroundColor: (scrollPosition !== 0 || toggled) && theme.palette.neutral[100] }}>
+      <CustomContainer>
+        <Toolbar
+          disableGutters={true}
+          sx={{
+            backgroundColor:
+              (scrollPosition !== 0 || toggled) && theme.palette.neutral[100],
+            borderRadius: "0px 0px 15px 15px",
+            paddingX: "0px",
+            paddingY: { lg: "0px" },
+            overflow: "hidden",            // 👈 ensures children respect border radius
+            width: "100%",                  // 👈 prevent full width so curve is visible
+            mx: "auto",                    // 👈 center it horizontally
 
-            {!isSmall && (
-              <CustomStackFullWidth
-                direction="row"
-                alignItems="center"
-                justifyContent="flex-end"
-                spacing={2}
-              >
-                <>
-                  {router.pathname !== "/" && (
-                    <ManageSearch
-                      zoneid="1"
-                      router="/"
-                      token={token}
-                      maxwidth="false"
+          }}
+          style={{ zIndex: 1251 }}
+        >
+          <NoSsr>
+            <CustomStackFullWidth
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              //spacing={2}
+              sx={{
+                paddingBottom: isSmall && "10px",
+                paddingTop: isSmall && "10px",
+                marginLeft: "0 !important",
+              }}
+            >
+              <Stack direction="row" alignItems="center">
+                {!isSmall && (
+                  <LogoSide
+                    width="110px"
+                    height="50px"
+                    configData={configData}
+                    objectFit="contain"
+                  />
+                )}
+                {!isSmall && location && (
+                  <NavLinks t={t} zoneid="zoneid" moduleType={moduleType} />
+                )}
+              </Stack>
+
+              {!isSmall && (
+                <CustomStackFullWidth
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  spacing={2}
+                >
+                  <>
+                    {router.pathname !== "/" && (
+                      <ManageSearch
+                        zoneid="1"
+                        router="/"
+                        token={token}
+                        maxwidth="false"
+                      />
+                    )}
+                  </>
+                  {token && moduleType !== "parcel" && (
+                    <NavBarIcon
+                      icon={<ChatBubbleOutlineIcon />}
+                      label={t("Chat")}
+                      user="false"
+                      handleClick={() => handleWishlistClick("/chatting")}
                     />
                   )}
-                </>
-                {token && moduleType !== "parcel" && (
-                  <NavBarIcon
-                    icon={<ChatBubbleOutlineIcon />}
-                    label={t("Chat")}
-                    user="false"
-                    handleClick={() => handleWishlistClick("/chatting")}
-                  />
-                )}
-                {token && zoneId && moduleType !== "parcel" && (
-                  <NavBarIcon
-                    icon={<FavoriteBorderIcon />}
-                    label={t("WishList")}
-                    user="false"
-                    handleClick={() => handleWishlistClick("/wishlist")}
-                    badgeCount={totalWishList}
-                  />
-                )}
-                {moduleType !== "parcel" && location && <Cart />}
-                {token ? (
-                  <IconButton
-                    ref={anchorRef}
-                    onClick={() => handleOpenPopover()}
-                    sx={{
-                      padding: "5px",
-                      gap: "15px",
-                    }}
-                  >
-                    <PersonOutlineOutlinedIcon
-                      color="primary"
-                      sx={{
-                        backgroundColor: (theme) =>
-                          alpha(theme.palette.primary.main, 0.1),
-                      }}
+                  {token && zoneId && moduleType !== "parcel" && (
+                    <NavBarIcon
+                      icon={<FavoriteBorderIcon />}
+                      label={t("WishList")}
+                      user="false"
+                      handleClick={() => handleWishlistClick("/wishlist")}
+                      badgeCount={totalWishList}
                     />
-                    <Typography
-                      color={theme.palette.neutral[1000]}
-                      textTransform="capitalize"
+                  )}
+                  {moduleType !== "parcel" && location && router.pathname !== "/" && <Cart />}
+                  {token ? (
+                    <IconButton
+                      ref={anchorRef}
+                      onClick={() => handleOpenPopover()}
+                      sx={{
+                        padding: "5px",
+                        gap: "15px",
+                      }}
                     >
-                      {profileInfo?.f_name}
-                    </Typography>
-                  </IconButton>
-                ) : (
-                  <CustomSignInButton from={router.pathname.replace("/", "")} />
-                )}
-              </CustomStackFullWidth>
-            )}
-            {isSmall && (
-              <ModuleWiseNav
-                router={router}
-                configData={configData}
-                token={token}
-                setToggled={setToggled}
+                      <PersonOutlineOutlinedIcon
+                        color="primary"
+                        sx={{
+                          backgroundColor: (theme) =>
+                            alpha(theme.palette.primary.main, 0.1),
+                        }}
+                      />
+                      <Typography
+                        color={theme.palette.neutral[1000]}
+                        textTransform="capitalize"
+                      >
+                        {profileInfo?.f_name}
+                      </Typography>
+                    </IconButton>
+                  ) : (
+                    <CustomSignInButton from={router.pathname.replace("/", "")} />
+                  )}
+                </CustomStackFullWidth>
+              )}
+              {isSmall && (
+                <ModuleWiseNav
+                  router={router}
+                  configData={configData}
+                  token={token}
+                  setToggled={setToggled}
+                />
+              )}
+              <AccountPopover
+                anchorEl={anchorRef.current}
+                onClose={() => setOpenPopover(false)}
+                open={openPopover}
               />
-            )}
-            <AccountPopover
-              anchorEl={anchorRef.current}
-              onClose={() => setOpenPopover(false)}
-              open={openPopover}
-            />
-          </CustomStackFullWidth>
-        </NoSsr>
-      </Toolbar>
-    </CustomContainer>
+            </CustomStackFullWidth>
+          </NoSsr>
+        </Toolbar>
+      </CustomContainer>
     </Box>
   );
 };
