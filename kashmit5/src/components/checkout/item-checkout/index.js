@@ -773,11 +773,11 @@ const ItemCheckout = (props) => {
     return cartList?.every((item) => item?.is_apply_coupon === 1);
   };
   useEffect(() => {
-    if(isItemCouponApply(cartList) ||( storeData?.free_delivery && (storeData?.coupon_and_free_delivery_both === 0 || configData?.coupon_and_free_delivery_both === 0))){
+    if(( storeData?.free_delivery && (storeData?.coupon_and_free_delivery_both === 0 || configData?.coupon_and_free_delivery_both === 0))){
       setIsCouponVisible(false);
     }else{
       setIsCouponVisible(true);
-    }
+    }
    
   }, [
     deliveryFee,
