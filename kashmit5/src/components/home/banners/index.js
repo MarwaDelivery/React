@@ -51,6 +51,9 @@ const BannersWrapper = styled(Box)(({ theme, isSingle }) => ({
   [theme.breakpoints.down("xs")]: {
     height: "120px",
   },
+  [theme.breakpoints.up("xl")]: {
+    height: "340px",
+  },
 }));
 
 
