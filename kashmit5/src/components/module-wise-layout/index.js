@@ -23,7 +23,6 @@ import TabForAI from "components/module-wise-layout/TabForAI";
 import CloseIcon from "@mui/icons-material/Close";
 import AiBot from "components/module-wise-layout/aibot";
 import { getToken } from "helper-functions/getToken";
-import Skeleton from "@mui/material";
 const ModuleWiseLayout = ({ configData }) => {
   const [rerender, setRerender] = useState(false);
   const { selectedModule } = useSelector((state) => state.utilsData);
@@ -46,10 +45,6 @@ const ModuleWiseLayout = ({ configData }) => {
   useEffect(() => {
     if (router.pathname === "/home") {
       refetch();
-      if (!data) {
-  return <Skeleton variant="rectangular" width="100%" height="200px" />;
-}
-
     }
   }, []);
   useEffect(() => {

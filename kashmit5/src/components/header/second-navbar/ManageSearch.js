@@ -96,7 +96,7 @@ const ManageSearch = ({ zoneid, token, maxwidth }) => {
           {zoneid && router.pathname !== "/" && (
             <>
               <CustomSearch
-                label={t("Search for items or store...")}
+                label={t("Search for markets or restaurants...")}
                 handleSearchResult={handleKeyPress}
                 selectedValue={selectedValue}
               />

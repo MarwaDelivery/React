@@ -3,7 +3,7 @@ export const english = {
   "Download ON": "Download ON",
   "GET IT ON": "GET IT ON",
   "Become a store owner": "Become a store owner",
-  "Search for items or store...": "Search for items or store...",
+  "Search for markets or restaurants...": "Search for markets or restaurants...",
   Stores: "Stores",
   "Filter Search Results": "Filter Search Results",
   Your: "Your",

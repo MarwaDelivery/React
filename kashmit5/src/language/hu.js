@@ -3,7 +3,7 @@ export const hungarian = {
   "Download ON": "Töltse le",
   "GET IT ON": "Megkapja",
   "Become a store owner": "Legyen üzlet tulajdonosa",
-  "Search for items or store...": "Keressen tárgyakat vagy boltot ...",
+  "Search for markets or restaurants...": "Keressen piacokat vagy éttermeket...",
   Stores: "Áruházak",
   "Filter Search Results": "Szűrőkeresési eredmények",
   Your: "A te",
