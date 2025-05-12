@@ -87,6 +87,7 @@ const FeaturedCategories = ({ configData }) => {
                         image={`${configData?.base_urls?.category_image_url}/${item?.image}`}
                         title={item?.name}
                         id={item?.id}
+                        data={item}
                       />
                     );
                   })}

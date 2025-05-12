@@ -265,6 +265,7 @@ export const english = {
   "More from Store": "More from Store",
   Home: "Home",
   "Features Catagories": "Features Catagories",
+  "Discovery": "Discovery",
   Food: "Food",
   Campaigns: "Campaigns",
   "Best Reviewed Foods": "Best Reviewed Foods",

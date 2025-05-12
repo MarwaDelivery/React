@@ -37,7 +37,7 @@ const BannersWrapper = styled(Box)(({ theme, isSingle }) => ({
   width: "98% !important", // Add !important
   marginLeft: isSingle ? "auto !important" : "2% !important",
   marginRight: isSingle ? "auto !important" : "0 !important",
-  height: "350px",
+  height: "600px",
   overflow: "hidden",
   [theme.breakpoints.down("lg")]: {
     height: "280px",
@@ -50,6 +50,9 @@ const BannersWrapper = styled(Box)(({ theme, isSingle }) => ({
   },
   [theme.breakpoints.down("xs")]: {
     height: "120px",
+  },
+  [theme.breakpoints.up("xl")]: {
+    height: "340px",
   },
 }));
 
@@ -93,12 +96,24 @@ const Banners = (props) => {
     setBannersData(mergedBannerData);
   };
   const handleBannerClick = (banner) => {
+    let moduleType = null;
+    const moduleId = banner?.store?.module_id;
+    if (moduleId == 2) {
+      moduleType = "grocery"
+    }else if (moduleId == 3){
+      moduleType = "food"
+    }else if (moduleId == 7){
+      moduleType = "parcel"
+    } else{
+      return null;
+    };  
+    console.log('Data:', data);
     if (banner?.isCampaign) {
       router.push({
         pathname: "/campaigns/[id]",
         query: {
           id: `${banner?.id}`,
-          module_id: `${getModuleId()}`,
+          module_id: `${banner?.store?.module_id}`,
         },
       });
     } else {
@@ -107,10 +122,10 @@ const Banners = (props) => {
           pathname: "/store/[id]",
           query: {
             id: `${banner?.store?.id}`,
-            module_id: `${getModuleId()}`,
-            distance: `${banner?.store?.distance}`,
+            module_id: `${banner?.store?.module_id}`,
+            //distance: `${banner?.store?.distance}`,
             zone_id: `${banner?.store?.zone_id}`,
-            moduleType: getCurrentModuleType(),
+            moduleType: `${moduleType}`,
           },
         });
       } else {
@@ -124,7 +139,7 @@ const Banners = (props) => {
               query: {
                 id: `${banner?.item?.slug ? banner?.item?.slug : banner?.item?.id
                   }`,
-                module_id: `${getModuleId()}`,
+                module_id: `${banner?.store?.module_id}`,
               },
             });
           }
@@ -165,10 +180,7 @@ const Banners = (props) => {
     cssEase: "linear",
   };
   const isSmall = useMediaQuery("(max-width:1180px)");
-
-  if (selectedModule?.module_type !== "food") {
-    return null;
-  }
+  
 
   return (
     <>

@@ -101,14 +101,17 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
       )}
       <Box width="92%" marginLeft="4%">
         <Grid container spacing={1}>
-            <Grid item xs={12}> 
-              <Banners />
-            </Grid>
-          <Grid item maxWidth="90% !important" marginLeft="5% !important" xs={12} sx={{ marginTop: "10px" }}>
+          {/*<Grid item xs={12}>
+              //<Banners />
+          </Grid>*/}
+          {!isDiscovery && <Grid item maxWidth="90% !important" marginLeft="5% !important" xs={12} sx={{ marginTop: "10px" }}>
             <FeaturedCategories configData={configData} />
-          </Grid>
+          </Grid>}
           {isDiscovery && (
             <>
+              <Grid item xs={12}>
+                <Banners />
+              </Grid>
               {categoryListsPopular?.length > 0 &&
                 categoryListsPopular?.map((item, index) => (
                   <Grid key={index} item xs={12}>
@@ -119,8 +122,7 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
                     />
                   </Grid>
                 ))}
-
-             {/* <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <NewArrivalStores />
               </Grid>*/}
 

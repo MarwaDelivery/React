@@ -139,7 +139,6 @@ const StoresInfoCard = (props) => {
   const {data, wishlistcard} = props;
   const [distanceToCustomer, setDistanceToCustomer] = useState(null);
 
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("currentLatLng");
@@ -148,10 +147,10 @@ const StoresInfoCard = (props) => {
           const { lat, lng } = JSON.parse(stored);
           const storeLat = data?.latitude;
           const storeLng = data?.longitude;
-          console.log("StoreLat", storeLat);
-          console.log("StoreLng", storeLng);
-          console.log("customerlat", lat);
-          console.log("customerlng", lng);
+          //console.log("StoreLat", storeLat);
+          //console.log("StoreLng", storeLng);
+          //console.log("customerlat", lat);
+          //console.log("customerlng", lng);
   
           if (
             lat != null &&
@@ -166,7 +165,7 @@ const StoresInfoCard = (props) => {
               storeLng
             );
             setDistanceToCustomer(distance);
-            console.log("distance",distance)
+            //console.log("distance",distance)
           }
         } catch (error) {
           console.error("Failed to parse currentLatLng from localStorage:", error);
@@ -203,8 +202,20 @@ const StoresInfoCard = (props) => {
   const id = data?.id ? data?.id : data?.slug;
   const { configData } = useSelector((state) => state.configData);
   const store_image_url = `${configData?.base_urls?.store_image_url}`;
-  const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
+  const moduleId = data?.module_id;
+  let module_type = null;
+  //const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
   const deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
+
+  if (moduleId == 2) {
+    module_type = "grocery"
+  }else if (moduleId == 3){
+    module_type = "food"
+  }else if (moduleId == 7){
+    module_type = "parcel"
+  } else{
+    return null;
+  };
 
 
 
@@ -341,7 +352,7 @@ const StoresInfoCard = (props) => {
             module_id: `${moduleId}`,
             distance: data?.distance,
             zone_id: data?.zone_id,
-            moduleType: getCurrentModuleType(),
+            moduleType: `${module_type}`,
           },
         }}
       >

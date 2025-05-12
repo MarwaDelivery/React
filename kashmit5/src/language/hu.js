@@ -263,6 +263,7 @@ export const hungarian = {
   "More from Store": "Többet a boltból",
   Home: "Kezdőlap",
   "Features Catagories": "Katagóriákkal rendelkezik",
+  "Discovery": "Felfedezés",
   Food: "Étel",
   Campaigns: "Kampány",
   "Best Reviewed Foods": "A legjobban áttekintett ételek",

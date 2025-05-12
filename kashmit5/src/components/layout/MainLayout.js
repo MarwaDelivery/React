@@ -39,6 +39,28 @@ const MainLayout = ({ children, configData }) => {
       }
     }
   }
+  useEffect(() => {
+    if (!data) return;
+  
+    const selectedModule = JSON.parse(localStorage.getItem("module"));
+    const selectedModuleType = selectedModule?.module_type;
+  
+    if (data.length === 0) {
+      localStorage.removeItem("module");
+      router.push("/", undefined, { shallow: true });
+    } else {
+      const matchedModule = data.find(
+        (item) => item.module_type === selectedModuleType
+      );
+      if (!matchedModule) {
+        if (!selectedModule?.isDiscovery) {
+          const newModule = data[0];
+          localStorage.setItem("module", JSON.stringify(newModule));
+          dispatch(setSelectedModule(newModule));
+        }
+      }
+    }
+  }, [data]);  
   return (
     <MainLayoutRoot justifyContent="space-between" key={rerenderUi}>
       <header>

@@ -1,5 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import { useSelector } from "react-redux";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useGetCategoriesChildes from "../../api-manage/hooks/react-query/categories-details/useGetCategoriesChildes";
+import ItemNavigation from "./ItemNavigation";
+import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
+import StoresInfoCard from "../home/stores-with-filter/cards-grid/StoresInfoCard";
+import CustomEmptyResult from "../custom-empty-result";
+import noData from "../../../public/static/nodata.png";
+
+import {
+  not_found_text_store,
+} from "../../utils/staticTexts";
+import Shimmer from "components/categories/Shimmer";
+
+const CategoriesDetails = ({
+  id,
+  category_id,
+  setCategoryId,
+  storeData,
+  isLoading,
+  subCategory,
+}) => {
+  const [categoryMenus, setCategoryMenus] = useState([]);
+  const matches = useMediaQuery("(max-width:1180px)");
+  const matchesXs = useMediaQuery("(max-width:480px)");
+  const { data: childesData, refetch } = useGetCategoriesChildes({ category_id });
+
+  useEffect(() => {
+    if (subCategory !== "true") {
+      refetch();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (id && childesData?.length > 0) {
+      setCategoryMenus(childesData);
+    }
+    setCategoryId(id);
+  }, [childesData, id]);
+
+  return (
+<Grid container item xs={12} spacing={1}>
+  {isLoading ? (
+    // Show a shimmer
+    <Shimmer/> 
+  ) : storeData?.stores?.length > 0 ? (
+    storeData.stores.map((item) => (
+      <Grid
+        item
+        md={matches ? 3 : 2.4}
+        sm={4}
+        xs={matchesXs ? 12 : 6}
+        key={item.id}
+      >
+        <StoresInfoCard data={item} />
+      </Grid>
+    ))
+  ) : (
+    <CustomEmptyResult label={not_found_text_store} image={noData} />
+  )}
+</Grid>  );
+};
+
+export default CategoriesDetails;
+
+/*import React, { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
 import TabsTypeOne from "../custom-tabs/TabsTypeOne";
 import { t } from "i18next";
 import useGetCategoriesChildes from "../../api-manage/hooks/react-query/categories-details/useGetCategoriesChildes";
@@ -150,3 +217,4 @@ const CategoriesDetails = ({
 };
 
 export default CategoriesDetails;
+*/
