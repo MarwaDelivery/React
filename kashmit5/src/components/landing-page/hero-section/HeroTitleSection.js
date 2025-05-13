@@ -81,7 +81,7 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
       <CustomStackFullWidth spacing={2} marginTop="16px !important">
         <Typography variant={isXSmall ? "subtitle2" : "h5"}
           fontWeight="500"
-          color="rgb(36, 208, 36)"
+          color="rgb(0, 0, 0)"
         >
           {landingPageData?.hero_section?.hero_section_short_description}
         </Typography>
