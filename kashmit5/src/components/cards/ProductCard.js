@@ -67,15 +67,15 @@ const CustomCardMedia = styled(CardMedia)(({ theme, horizontalcard }) => ({
   overflow: "hidden",
   padding: "0",
   borderRadius: horizontalcard === "true" ? "0x 10px" : "10px 10px 0 0",
-  height: horizontalcard === "true" ? "100%" : "180px",
+  height: horizontalcard === "true" ? "150px" : "180px",
   width: horizontalcard === "true" && "230px",
 
   backgroundColor:"white",
    // horizontalcard === "true" ? theme.palette.neutral[100] : "none",
 
   [theme.breakpoints.down("sm")]: {
-    width: "170px",
-    height: "100%",
+    width: "300px",
+    height: "160px",
   },
 }));
 export const CustomCardButton = styled(CustomButtonPrimary)(
@@ -336,7 +336,7 @@ const ProductCard = (props) => {
               alt={item?.title}
               height="100%"
               width="100%"
-              obejctfit="contain"
+              obejctfit="cover" 
             />
             {item?.module?.module_type === "food" && (
               <ProductsUnavailable product={item} />
