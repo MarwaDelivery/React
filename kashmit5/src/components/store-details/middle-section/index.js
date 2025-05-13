@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState, useRef } from "react";
 import CustomSearch from "../../custom-search/CustomSearch";
 import { Grid, IconButton } from "@mui/material";
 import Sidebar from "./Sidebar";
@@ -19,6 +19,8 @@ import notFoundImage from "../../../../public/static/food-not-found.png";
 import { useTranslation } from "react-i18next";
 import OutlinedGroupButtons from "../../group-buttons/OutlinedGroupButtons";
 import { getModuleId } from "helper-functions/getModuleId";
+import { useGetCategories } from "../../../api-manage/hooks/react-query/all-category/all-categorys";
+import { Typography } from "@mui/material";
 
 export const handleShimmerProducts = () => {
   return (
@@ -53,6 +55,40 @@ const MiddleSection = (props) => {
     moduleId: module_id,
     zoneId: zone_id,
   };
+  const [allCategories, setAllCategories] = useState([]);
+  const categoryRefs = useRef({});
+
+  const handleAllCategoriesSuccess = (res) => {
+    if (res?.data?.length > 0) {
+      setAllCategories(res.data);
+    }
+  };
+
+  const { refetch: refetchAllCategories } = useGetCategories(
+    "",
+    handleAllCategoriesSuccess,
+    "stores-categories"
+  );
+
+  useEffect(() => {
+    refetchAllCategories();
+  }, []);
+
+  const handleScrollToCategory = (id) => {
+    // Scroll to top if 'All' category is selected (commonly ID = 0)
+    if (id === 0) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    // Scroll to the specific category section
+    const targetRef = categoryRefs.current[id];
+    if (targetRef && targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+
   const handleSuccess = (res) => {
     if (res) {
       dispatch({ type: ACTION.setData, payload: res });
@@ -127,9 +163,10 @@ const MiddleSection = (props) => {
     <CustomBoxFullWidth maxWidth="80%" marginLeft="10% !important">
       {(moduleId || module_id) && (
         <Grid container >
-          <Grid item xs={0} sm={0} md={0} lg={2.5} width = "100%">
+          <Grid item xs={0} sm={0} md={0} lg={2.5} width="100%">
             <Sidebar
               {...props}
+              handleScrollToCategory={handleScrollToCategory}
               onClose={() =>
                 dispatch({ type: ACTION.setIsSidebarOpen, payload: false })
               }
@@ -139,7 +176,7 @@ const MiddleSection = (props) => {
               // priceFilterRange={handlePriceFilterRange(
               //   storeDetails?.price_range
               // )}
-             // priceFilterRange={storeDetails?.price_range}
+              // priceFilterRange={storeDetails?.price_range}
               storesApiLoading={isRefetching}
               searchIsLoading={refetchSearchData}
             />
@@ -161,14 +198,14 @@ const MiddleSection = (props) => {
                   alignItems="center"
                   spacing={2}
                 >
-                  
+
                   {Number.parseInt(storeDetails?.module_id) ===
                     Number.parseInt(4) && (
-                    <OutlinedGroupButtons
-                      selected={state.type}
-                      handleSelection={handleSelection}
-                    />
-                  )}
+                      <OutlinedGroupButtons
+                        selected={state.type}
+                        handleSelection={handleSelection}
+                      />
+                    )}
                 </CustomStackFullWidth>
               </Grid>
               <Grid
@@ -187,20 +224,65 @@ const MiddleSection = (props) => {
                 />
               </Grid>
               {state.data &&
-                state.data?.products?.length > 0 &&
-                state.data?.products?.map((item, index) => {
-                  return (
-                    <Grid width="90% !important" item key={index} xs={12} sm={4} md={4} lg={3}>
-                      <ProductCard
-                        item={item}
-                        width="100% !important"
-                        horizontalcard="true"
-                        cardheight={{ xs: "fit-content", sm: "220px" }}
-                    //    cardheight="400px"
-                      />
-                    </Grid>
-                  );
-                })}
+                state.data.products &&
+                allCategories.length > 0 && (
+                  <>
+                    {allCategories.map((category) => {
+                      const productsInCategory = state.data.products.filter(
+                        (product) => product.category_id === category.id
+                      );
+                      if (productsInCategory.length === 0) return null;
+
+                      // Create a ref for this category if it doesn't exist
+                      if (!categoryRefs.current[category.id]) {
+                        categoryRefs.current[category.id] = React.createRef();
+                      }
+
+                      return (
+                        <div
+                          key={category.id}
+                          ref={categoryRefs.current[category.id]}
+                          style={{ width: "100%", marginBottom: "2rem" }}
+                        >
+                          <Typography vvariant="h6"
+                            sx={{
+                              mb: 2,
+                              fontWeight: "bold", 
+                              fontSize: "1.5rem", 
+                              color: "rgb(152, 152, 152)", 
+                              textTransform: "uppercase", 
+                              letterSpacing: "0.5px", 
+                              marginTop:"20px"
+                            }}>
+                            {category.name}
+                          </Typography>
+                          <Grid container spacing={3}>
+                            {productsInCategory.map((item, index) => (
+                              <Grid
+                                item
+                                key={index}
+                                xs={12}
+                                sm={4}
+                                md={4}
+                                lg={3}
+                                style={{ width: "90% !important" }}
+                              >
+                                <ProductCard
+                                  item={item}
+                                  width="100% !important"
+                                  horizontalcard="true"
+                                  cardheight={{ xs: "fit-content", sm: "220px" }}
+                                />
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </div>
+                      );
+                    })}
+
+                  </>
+                )}
+
 
               {isLoading && handleShimmerProducts()}
               {state.data?.products?.length === 0 && (
@@ -210,7 +292,7 @@ const MiddleSection = (props) => {
                 />
               )}
             </Grid>
-           {/*  {state.data?.products?.length > 0 && (
+            {/*  {state.data?.products?.length > 0 && (
               <Grid item xs={12} sm={12} md={12} align="center" mt="2rem">
                 <CustomPagination
                   total_size={state.data?.total_size}

@@ -34,7 +34,7 @@ const ACTION = {
 };
 
 const Sidebar = (props) => {
-  const { ownCategories, handleCategoryId } = props;
+  const { ownCategories, handleScrollToCategory } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { t } = useTranslation();
   const theme = useTheme();
@@ -69,10 +69,11 @@ const Sidebar = (props) => {
     refetch();
   }, []);
 
-  const handleCategoriesClick = (id) => {
-    dispatch({ type: ACTION.setIsSelected, payload: id });
-    handleCategoryId?.(id);
-  };
+const handleCategoriesClick = (id) => {
+  dispatch({ type: ACTION.setIsSelected, payload: id });
+  handleScrollToCategory?.(id);
+};
+
 
   const handleMoreClick = (event) => {
     setAnchorEl(event.currentTarget);

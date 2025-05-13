@@ -50,8 +50,8 @@ const TopNavBar = () => {
                 direction="row"
                 justifyContent="space-between"
                 sx={{
-                  backgroundImage:
-                    "linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0))",
+                  backgroundImage:"transparent"
+                    //"linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0))",
                  // backdropFilter: "blur(10px)",
                 }}
               >
