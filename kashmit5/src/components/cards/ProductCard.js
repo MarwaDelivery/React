@@ -130,16 +130,16 @@ const ProductCard = (props) => {
     if (Number.parseInt(item?.store_discount) === 0) {
       if (Number.parseInt(item?.discount) > 0) {
         if (item?.discount_type === "percent") {
-          return <CustomBadge text={`${item?.discount}${p_off}`} />;
+          return <CustomBadge text={`-${item?.discount}${p_off}`} />;
         } else {
           return (
-            <CustomBadge text={`${getAmountWithSign(item?.discount)} ${off}`} />
+            <CustomBadge text={`-${getAmountWithSign(item?.discount)} ${off}`} />
           );
         }
       }
     } else {
       if (Number.parseInt(item?.store_discount) > 0) {
-        return <CustomBadge text={`${item?.store_discount}${p_off}`} />;
+        return <CustomBadge text={`-${item?.store_discount}${p_off}`} />;
       }
     }
   };
@@ -475,6 +475,7 @@ const ProductCard = (props) => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "flex-end",
+                marginTop:"-15px",
               }}
             >
               {!isInCart && (
