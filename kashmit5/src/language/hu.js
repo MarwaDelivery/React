@@ -835,6 +835,7 @@ export const hungarian = {
   "Saved Addresses": "Mentett címek",
   "This variation is out of stock": "Ez a variáció nincs raktáron",
   "0 HUF delivery fee": "0 Ft szállítási díj",
+  "0 HUF":"0 Ft",
   "Store is closed. Try again later.": "A bolt bezárt. Próbáld újra később.",
   "Restaurant is closed. Try again later.":
     "Az étterem bezárt. Próbáld újra később.",

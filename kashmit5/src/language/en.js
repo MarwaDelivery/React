@@ -844,5 +844,6 @@ export const english = {
   "Join our online marketplace revolution and boost your income.":
     "Join our online marketplace revolution and boost your income.",
     "Set Location":"Set Location",
-    "Pick Form Map":"Pick Form Map"
+    "Pick Form Map":"Pick Form Map",
+    "0 HUF":"0 HUF",
 };
