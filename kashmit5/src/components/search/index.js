@@ -8,10 +8,10 @@ import useGetSearch from "../../api-manage/hooks/react-query/search/useGetSearch
 import { useSelector } from "react-redux";
 import { getFilterChoices } from "./getFilterChoices";
 const tabsData = [
-  {
-    title: "Items",
-    value: "items",
-  },
+  /* {
+     title: "Items",
+     value: "items",
+   },*/
   {
     title: "Stores",
     value: "stores",
@@ -80,7 +80,7 @@ const ProductSearchPage = ({ configData }) => {
     let filteredData = getFilterChoices(filterData, data, currentTab);
 
     if (filteredData) {
-      if (currentTab === "items") {
+      /*if (currentTab === "items") {
         setPageData({
           ...pageData,
           products: filteredData,
@@ -116,7 +116,14 @@ const ProductSearchPage = ({ configData }) => {
           //         total_size: filteredData?.length,
           //       },
         });
-      }
+      }*/
+
+      setPageData({
+        ...pageData,
+        store: filteredData,
+        total_size: filteredData?.length,
+      });
+
     }
   };
 
@@ -125,7 +132,7 @@ const ProductSearchPage = ({ configData }) => {
       <MetaData title={`${searchValue} on ${configData?.business_name}`} />
       <CustomStackFullWidth>
         <SearchFilterWithResults
-          tabsData={tabsData}
+          //tabsData={tabsData}
           currentTab={currentTab}
           setCurrentTab={setCurrentTab}
           count={pageData?.total_size}
