@@ -437,9 +437,9 @@ const StoresInfoCard = (props) => {
                 {/* Fee */}
                 <Stack direction="row" spacing={0.5} alignItems="center">
                   <DeliveryDiningIcon sx={{ fontSize: 16, color: gray }} />
-                  <Typography variant="caption" color={gray}>
-                    {t("0 HUF")}
-                  </Typography>
+                  {/*<Typography variant="caption" color={gray}>
+                    {deliveryStatus || "0 HUF"}
+                  </Typography>*/}
                 </Stack>
 
                 {/* Time */}
