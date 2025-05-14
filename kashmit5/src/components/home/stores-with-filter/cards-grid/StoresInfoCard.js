@@ -30,6 +30,9 @@ import { getNumberWithConvertedDecimalPoint } from "../../../../utils/CustomFunc
 import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
 import { calculateDistanceInMeters } from "../../../../utils/geoUtils";
 import coords from "components/landing-page/hero-section/HeroLocationForm";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import StarIcon from "@mui/icons-material/Star"; // or use your existing RatingStar
 
 
 
@@ -84,7 +87,7 @@ export const isDeliveryFree = (data) => {
   }
 };
 export const getDeliveryFeeStatus = (data, distance) => {
-  console.log("Stores info",data)
+  console.log("Stores info", data)
   // Only proceed if free delivery is enabled by admin
   if (data?.free_delivery_set_by_admin !== 1) return null;
 
@@ -92,7 +95,7 @@ export const getDeliveryFeeStatus = (data, distance) => {
   const distanceInKm = distance ? distance / 1000 : null;
 
   // Check if within free delivery distance
-  const withinDistance = 
+  const withinDistance =
     data?.free_delivery_required_km_upto_status &&
     distanceInKm !== null &&
     distanceInKm <= data?.free_delivery_required_km_upto;
@@ -114,7 +117,7 @@ export const getDeliveryFeeStatus = (data, distance) => {
     return t("delivery_fee_with_amount", {
       amount: data?.free_delivery_required_amount,
     });
-     // Return string directly
+    // Return string directly
   }
 
   // No free delivery conditions met
@@ -136,7 +139,7 @@ export const getDeliveryFeeStatus = (data, distance) => {
 };*/
 
 const StoresInfoCard = (props) => {
-  const {data, wishlistcard} = props;
+  const { data, wishlistcard } = props;
   const [distanceToCustomer, setDistanceToCustomer] = useState(null);
 
   useEffect(() => {
@@ -151,7 +154,7 @@ const StoresInfoCard = (props) => {
           //console.log("StoreLng", storeLng);
           //console.log("customerlat", lat);
           //console.log("customerlng", lng);
-  
+
           if (
             lat != null &&
             lng != null &&
@@ -173,30 +176,30 @@ const StoresInfoCard = (props) => {
       }
     }
   }, [data]);
- /* useEffect(() => {
-    const customerLat = latitude;
-    const customerLng = longitude;
-    const storeLat = data?.latitude;
-    const storeLng = data?.longitude;
-    console.log("StoreLat",storeLat)
-    console.log("StoreLng",storeLng)
-    console.log("customerlat",customerLat)
-    if (
-      customerLat != null &&
-      customerLng != null &&
-      storeLat != null &&
-      storeLng != null
-    ) {
-      const distance = calculateDistanceInMeters(
-        customerLat,
-        customerLng,
-        storeLat,
-        storeLng
-      );
-      setDistanceToCustomer(distance); // Set the calculated distance
-    }
-  }, [data]);
-  */
+  /* useEffect(() => {
+     const customerLat = latitude;
+     const customerLng = longitude;
+     const storeLat = data?.latitude;
+     const storeLng = data?.longitude;
+     console.log("StoreLat",storeLat)
+     console.log("StoreLng",storeLng)
+     console.log("customerlat",customerLat)
+     if (
+       customerLat != null &&
+       customerLng != null &&
+       storeLat != null &&
+       storeLng != null
+     ) {
+       const distance = calculateDistanceInMeters(
+         customerLat,
+         customerLng,
+         storeLat,
+         storeLng
+       );
+       setDistanceToCustomer(distance); // Set the calculated distance
+     }
+   }, [data]);
+   */
 
 
   const id = data?.id ? data?.id : data?.slug;
@@ -209,11 +212,11 @@ const StoresInfoCard = (props) => {
 
   if (moduleId == 2) {
     module_type = "grocery"
-  }else if (moduleId == 3){
+  } else if (moduleId == 3) {
     module_type = "food"
-  }else if (moduleId == 7){
+  } else if (moduleId == 7) {
     module_type = "parcel"
-  } else{
+  } else {
     return null;
   };
 
@@ -270,19 +273,19 @@ const StoresInfoCard = (props) => {
       {/* Delivery Fee Badge */}
       {deliveryStatus && (
         <Stack
-        sx={{
-          position: "absolute",
-          top: "4%",
-          backgroundColor: theme.palette.primary.main,
-          padding: "5px",
-          zIndex: "99",
-          borderRadius: "5px",
-          color: "white",
-          fontSize: "12px",
-          fontWeight: "bold",
-        }}
+          sx={{
+            position: "absolute",
+            top: "4%",
+            backgroundColor: theme.palette.primary.main,
+            padding: "5px",
+            zIndex: "99",
+            borderRadius: "5px",
+            color: "white",
+            fontSize: "12px",
+            fontWeight: "bold",
+          }}
         >
-         {deliveryStatus}
+          {deliveryStatus}
         </Stack>
       )}
       {deliveryStatus === "free" && (
@@ -396,59 +399,69 @@ const StoresInfoCard = (props) => {
               mt: 1,
             }}
           >
-            <Typography
-              textAlign="center"
-              fontWeight="bold"
-              sx={{
-                textAlign: "left",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {data?.name}
-            </Typography>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="center"
-              spacing={0.5}
-            >
-              {/*getNumberWithConvertedDecimalPoint(data?.avg_rating, configData?.digit_after_decimal_point)*/}
-
-              <RatingStar fontSize="16px" color="warning.dark" />
-              <Typography fontWeight="bold">
-
-
-                {data?.avg_rating?.toFixed(1)}
+            <Box sx={{ p: 1, width: "100%" }}>
+              {/* Store Name */}
+              <Typography fontWeight={600} fontSize="16px" textAlign="left">
+                {data?.name}
               </Typography>
-            </Stack>
-          </Box>
 
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="start"
-            spacing={0.5}
-            sx={{ mt: 1 }}
-          >
-            <Typography
-              variant="body2"
-              color={gray}
-              sx={{
-                textAlign: "left",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {data?.address}
-            </Typography>
-          </Stack>
+              {/* Store Address */}
+              <Typography
+                variant="body2"
+                color={gray}
+                sx={{
+                  textAlign: "left",
+                  mt: "2px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: "vertical",
+                }}
+              >
+                {data?.address}
+              </Typography>
+
+              {/* Dashed Divider */}
+              <Box
+                sx={{
+                  borderBottom: "1px dashed",
+                  borderColor: gray,
+                  width: "100%",
+                  my: 0.5,
+                }}
+              />
+
+              {/* Delivery Fee, Time, Rating */}
+              <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+                {/* Fee */}
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <DeliveryDiningIcon sx={{ fontSize: 16, color: gray }} />
+                  <Typography variant="caption" color={gray}>
+                    {deliveryStatus || "0 HUF"}
+                  </Typography>
+                </Stack>
+
+                {/* Time */}
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <AccessTimeIcon sx={{ fontSize: 16, color: gray }} />
+                  <Typography variant="caption" color={gray}>
+                    {data?.delivery_time || "N/A"}
+                  </Typography>
+                </Stack>
+
+                {/* Rating */}
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <RatingStar fontSize="14px" color="warning.dark" />
+                  <Typography variant="caption" fontWeight="bold">
+                    {data?.avg_rating?.toFixed(1) || "N/A"}
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Box>
+
+
+          </Box>
         </Box>
       </Link>
       <CustomDialogConfirm
