@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect, useMemo } from "react";
 import {
   Grid,
   IconButton,
@@ -53,7 +53,8 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MailIcon from "@mui/icons-material/Mail";
 import moment from "moment";
 import ClickToCall from "components/header/top-navbar/ClickToCall";
-
+import { getDeliveryFeeStatus } from "components/home/stores-with-filter/cards-grid/StoresInfoCard";
+import { calculateDistanceInMeters } from "utils/geoUtils";
 const ImageWrapper = styled(Box)(({ theme }) => ({
   position: "relative",
   borderRadius: "50%",
@@ -103,7 +104,7 @@ const reducer = (state, action) => {
   }
 };
 const Top = (props) => {
-  const { bannerCover, storeDetails, configData, logo } = props;
+  const { bannerCover, storeDetails, configData, logo, data } = props;
   const router = useRouter();
   const { distance } = router.query;
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -251,6 +252,45 @@ const Top = (props) => {
   const { cartList } = useSelector((state) => state.cart);
   const total = cartItemsTotalAmount(cartList);
 
+  const [distanceToCustomer, setDistanceToCustomer] = useState(null);
+
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("currentLatLng");
+      if (stored) {
+        try {
+          const { lat, lng } = JSON.parse(stored);
+          const storeLat = storeDetails?.latitude;
+          const storeLng = storeDetails?.longitude;
+
+          if (
+            lat != null &&
+            lng != null &&
+            storeLat != null &&
+            storeLng != null
+          ) {
+            const distance = calculateDistanceInMeters(
+              lat,
+              lng,
+              storeLat,
+              storeLng
+            );
+            setDistanceToCustomer(distance);
+          }
+        } catch (error) {
+          console.error(
+            "Failed to parse currentLatLng from localStorage:",
+            error
+          );
+        }
+      }
+    }
+  }, [storeDetails]);
+
+  const deliveryFeeStatusMessage = getDeliveryFeeStatus(storeDetails, distanceToCustomer);
+
+
   return (
     <>
       <Grid container spacing={2} width="90%" marginLeft="5%">
@@ -267,23 +307,23 @@ const Top = (props) => {
             ...storeDetails,
             distance: distance,
           }) && (
-            <Stack
-              sx={{
-                position: "absolute",
-                top: 30,
-                backgroundColor: theme.palette.primary.main,
-                padding: "5px",
-                zIndex: "99",
-                borderRadius: "5px",
-                color: "white",
-                fontSize: "12px",
-                fontWeight: "bold",
-                left: 30,
-              }}
-            >
-              {t("Free Delivery")}
-            </Stack>
-          )}
+              <Stack
+                sx={{
+                  position: "absolute",
+                  top: 30,
+                  backgroundColor: theme.palette.primary.main,
+                  padding: "5px",
+                  zIndex: "99",
+                  borderRadius: "5px",
+                  color: "white",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  left: 30,
+                }}
+              >
+                {deliveryFeeStatusMessage}
+              </Stack>
+            )}
           <CustomImageContainer
             src={bannerCover}
             width="100%"
@@ -326,8 +366,8 @@ const Top = (props) => {
               minHeight: storeDetails?.discount
                 ? "100%"
                 : isSmall
-                ? "fit-content"
-                : "250px",
+                  ? "fit-content"
+                  : "250px",
               borderRadius: "15px",
             }}
           >
@@ -363,11 +403,10 @@ const Top = (props) => {
                           {storeDetails?.address}
                         </Typography>
                         <Link
-                          href={`/review/${
-                            storeDetails?.id
-                              ? storeDetails?.id
-                              : storeDetails?.slug
-                          }`}
+                          href={`/review/${storeDetails?.id
+                            ? storeDetails?.id
+                            : storeDetails?.slug
+                            }`}
                           passHref
                         >
                           <Stack
@@ -504,14 +543,14 @@ const Top = (props) => {
                           </Stack>
                         </Stack>
                       ) : // <Stack
-                      //   direction="row"
-                      //   alignItems="center"
-                      //   spacing={0.3}
-                      // >
-                      //   <DeliveryDiningIcon />
-                      //   <Typography>{t("Free Delivery")}</Typography>
-                      // </Stack>
-                      null}
+                        //   direction="row"
+                        //   alignItems="center"
+                        //   spacing={0.3}
+                        // >
+                        //   <DeliveryDiningIcon />
+                        //   <Typography>{t("Free Delivery")}</Typography>
+                        // </Stack>
+                        null}
                       <Stack alignItems="flex-start">
                         {/*<Typography*/}
                         {/*  textAlign="center"*/}
@@ -573,8 +612,7 @@ const Top = (props) => {
             </Typography>
             <Typography>
               {t(
-                `-Max distance coverage area ${
-                  storeDetails?.free_delivery_required_km_upto
+                `-Max distance coverage area ${storeDetails?.free_delivery_required_km_upto
                 } km (You are away from ${(distance / 1000).toFixed(1)}km)`
               )}
             </Typography>
@@ -654,8 +692,8 @@ const Top = (props) => {
                   <Stack
                     spacing={1}
                     key={index}
-                    // direction="row"
-                    // alignItems="center"
+                  // direction="row"
+                  // alignItems="center"
                   >
                     <Typography
                       fontSize={{
@@ -665,7 +703,7 @@ const Top = (props) => {
                       }}
                       fontWeight="700"
                       color={theme.palette.neutral[700]}
-                      // minWidth="85px"
+                    // minWidth="85px"
                     >
                       {t(getDayName(item?.day))} :
                     </Typography>

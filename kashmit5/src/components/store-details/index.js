@@ -137,6 +137,8 @@ const StoreDetails = ({ storeDetails, configData }) => {
           p: 2,                    // padding (theme spacing)
           borderRadius: "12px",    // rounded corners
           textAlign: "center",     // optional: center the text
+          background:"black",
+          color:"white"
         }}>
           <strong>{deliveryFeeStatusMessage}</strong> {applied}🎉!
         </Alert>
