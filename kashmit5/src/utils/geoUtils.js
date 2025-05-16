@@ -1,16 +1,21 @@
+const toRadians = (degree) => {
+	return (degree * Math.PI) / 180;
+};
 export const calculateDistanceInMeters = (lat1, lon1, lat2, lon2) => {
-  const R = 6371000; // Earth's radius in meters
-  const toRad = (value) => (value * Math.PI) / 180;
+	const earthRadius = 6378137.0;
+	const startLatitude = lat1;
+	const endLatitude = lat2;
+	const startLongitude = lon1;
+	const endLongitude = lon2;
+	const dLat = toRadians(endLatitude - startLatitude);
+	const dLon = toRadians(endLongitude - startLongitude);
 
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
+	const a =
+		Math.pow(Math.sin(dLat / 2), 2) +
+		Math.pow(Math.sin(dLon / 2), 2) *
+		Math.cos(toRadians(startLatitude)) *
+		Math.cos(toRadians(endLatitude));
+	const c = 2 * Math.asin(Math.sqrt(a));
 
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  return R * c; // Distance in meters
+	return earthRadius * c;
 };

@@ -50,9 +50,9 @@ const TopNavBar = () => {
                 direction="row"
                 justifyContent="space-between"
                 sx={{
-                  backgroundImage:"transparent"
-                    //"linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0))",
-                 // backdropFilter: "blur(10px)",
+                  backgroundImage: "transparent"
+                  //"linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0))",
+                  // backdropFilter: "blur(10px)",
                 }}
               >
                 <CustomStackForLoaction direction="row">
@@ -65,24 +65,24 @@ const TopNavBar = () => {
                   alignItems="center"
                 >
                   <ThemeSwitches />
-               <ClickToCall>
+                  <ClickToCall>
                     <TopBarButton
                       size="small"
-                     variant="text"
-                     startIcon={
-                       <LocalPhoneIcon
+                      variant="text"
+                      startIcon={
+                        <LocalPhoneIcon
                           sx={{
                             ml: 1,
                             color: (theme) => theme.palette.neutral[1000],
-                         }}
-                       />
-                     }
-                   >
-                    <Typography color={theme.palette.neutral[1000]}>
-                   {configData?.phone} 
-                    </Typography>
-                  </TopBarButton> 
-                 </ClickToCall> 
+                          }}
+                        />
+                      }
+                    >
+                      <Typography color={theme.palette.neutral[1000]}>
+                        {configData?.phone}
+                      </Typography>
+                    </TopBarButton>
+                  </ClickToCall>
                   <CustomLanguage />
                 </Stack>
               </Stack>

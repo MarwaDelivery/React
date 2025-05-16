@@ -846,5 +846,6 @@ export const hungarian = {
     "Csatlakozzon az online Marketplace Revolution -hez, és növelje jövedelmét.",
   "Set Location": "Hely megadása",
   "Pick Form Map": "Térkép",
-  "Jobs": "Állások"
+  "Jobs": "Állások",
+  "applied":"felszámítva"
 };

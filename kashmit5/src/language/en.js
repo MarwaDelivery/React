@@ -846,4 +846,5 @@ export const english = {
     "Set Location":"Set Location",
     "Pick Form Map":"Pick Form Map",
     "0 HUF":"0 HUF",
+    "applied":"applied",
 };

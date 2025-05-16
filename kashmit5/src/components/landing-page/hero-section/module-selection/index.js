@@ -110,14 +110,25 @@ export const ModuleSelection = ({
     closeModal?.(item);
   };
   const handleSingleModule = (data) => {
+    if (!data) return;
     localStorage.setItem("module", JSON.stringify(data));
     setOpenModuleSelection?.(false);
-    router.push("/home");
+    router.replace("/home").then(() => {
+      window.location.reload();
+    });
   };
+  useEffect(() => {
+    if (data && data.length === 1) {
+      handleSingleModule(data[0]);
+    }
+  }, [data]);
+
 
   return (
     <>
-      {data && data?.length === 1 && handleSingleModule(data[0])}
+
+      {/* ---Commented Code--- */}
+      {/*{data && data?.length === 1 && handleSingleModule(data[0])}*/}
       {data && data?.length > 1 && (
         <CustomModal
           openModal={openModal}

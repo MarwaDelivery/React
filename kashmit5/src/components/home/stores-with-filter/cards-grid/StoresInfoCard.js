@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { IconButton, Paper, styled, Typography, useTheme } from "@mui/material";
 import { CustomStackFullWidth } from "../../../../styled-components/CustomStyles.style";
@@ -33,7 +33,10 @@ import coords from "components/landing-page/hero-section/HeroLocationForm";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import StarIcon from "@mui/icons-material/Star"; // or use your existing RatingStar
-
+import {
+  getBasicDeliveryFee
+} from "../../../../utils/CustomFunctions";
+import useGetDistance from "api-manage/hooks/react-query/google-api/useGetDistance";
 
 
 
@@ -87,7 +90,6 @@ export const isDeliveryFree = (data) => {
   }
 };
 export const getDeliveryFeeStatus = (data, distance) => {
-  console.log("Stores info", data)
   // Only proceed if free delivery is enabled by admin
   if (data?.free_delivery_set_by_admin !== 1) return null;
 
@@ -142,7 +144,54 @@ const StoresInfoCard = (props) => {
   const { data, wishlistcard } = props;
   const [distanceToCustomer, setDistanceToCustomer] = useState(null);
 
+  const [customerCoords, setCustomerCoords] = useState(null);
+  const storeCoords = {
+    lat: data?.latitude,
+    lng: data?.longitude,
+  };
+
+  const {
+    data: distanceData,
+    refetch: refetchDistance,
+    isLoading,
+    isError,
+  } = useGetDistance(customerCoords, storeCoords); // ✅ top-level hook usage
+
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("currentLatLng");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          setCustomerCoords(parsed); // ✅ triggers refetch via useEffect below
+        } catch (error) {
+          console.error("Failed to parse currentLatLng:", error);
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      customerCoords?.lat &&
+      customerCoords?.lng &&
+      storeCoords?.lat &&
+      storeCoords?.lng
+    ) {
+      refetchDistance(); // ✅ triggers API call
+    }
+  }, [customerCoords, storeCoords.lat, storeCoords.lng, refetchDistance]);
+
+
+
+  // Convert and display distance
+  const apiDistanceInKm = useMemo(() => {
+    if (distanceData?.rows?.[0]?.elements?.[0]?.distance?.value) {
+      return distanceData?.rows?.[0]?.elements?.[0]?.distance?.value / 1000;
+    }
+    return null;
+  }, [distanceData]);
+ /*useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("currentLatLng");
       if (stored) {
@@ -150,6 +199,11 @@ const StoresInfoCard = (props) => {
           const { lat, lng } = JSON.parse(stored);
           const storeLat = data?.latitude;
           const storeLng = data?.longitude;
+          const customerCoords = JSON.parse(stored); // { lat, lng }
+          const storeCoords = {
+            lat: data?.latitude,
+            lng: data?.longitude
+          };
           //console.log("StoreLat", storeLat);
           //console.log("StoreLng", storeLng);
           //console.log("customerlat", lat);
@@ -175,7 +229,7 @@ const StoresInfoCard = (props) => {
         }
       }
     }
-  }, [data]);
+  }, [data]);*/
   /* useEffect(() => {
      const customerLat = latitude;
      const customerLng = longitude;
@@ -202,14 +256,28 @@ const StoresInfoCard = (props) => {
    */
 
 
+   useEffect(() => {
+  if (
+    distanceData?.rows?.[0]?.elements?.[0]?.distance?.value != null
+  ) {
+    const distance = distanceData.rows[0].elements[0].distance.value;
+    setDistanceToCustomer(distance);
+  }
+}, [distanceData]);
+
+
   const id = data?.id ? data?.id : data?.slug;
   const { configData } = useSelector((state) => state.configData);
   const store_image_url = `${configData?.base_urls?.store_image_url}`;
   const moduleId = data?.module_id;
   let module_type = null;
   //const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
-  const deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
-
+  let deliveryStatus = null;
+  if (data.free_delivery_description != null) {
+    deliveryStatus = data.free_delivery_description;
+  } else {
+    deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
+  }
   if (moduleId == 2) {
     module_type = "grocery"
   } else if (moduleId == 3) {
@@ -267,7 +335,35 @@ const StoresInfoCard = (props) => {
       },
     });
   };
+  const converted = distanceData?.rows?.[0]?.elements?.[0]?.distance?.value / 1000;
 
+
+  const basicDeliveryFee = useMemo(() => {
+    if (converted != null && data) {
+      return getBasicDeliveryFee(
+        data,
+        configData,
+        converted,
+        0,
+        null,
+        "take_away",
+        null,
+        null,
+        null,
+        0,
+        null
+
+      );
+    }
+    return null;
+  }, [converted, data]);
+
+
+  let deliveryfees = null;
+
+  if (basicDeliveryFee >= 0) {
+    deliveryfees = getNumberWithConvertedDecimalPoint(basicDeliveryFee);
+  }
   return (
     <Stack sx={{ position: "relative", height: "100%" }}>
       {/* Delivery Fee Badge */}
@@ -276,6 +372,7 @@ const StoresInfoCard = (props) => {
           sx={{
             position: "absolute",
             top: "4%",
+            left: "0.3%",
             backgroundColor: theme.palette.primary.main,
             padding: "5px",
             zIndex: "99",
@@ -288,7 +385,26 @@ const StoresInfoCard = (props) => {
           {deliveryStatus}
         </Stack>
       )}
-      {deliveryStatus === "free" && (
+      {data.schedule_order && (
+        <Stack
+          sx={{
+            position: "absolute",
+            top: "52%",
+            left: "0.3%",
+            backgroundColor: theme.palette.secondary.main,
+            padding: "5px",
+            zIndex: "99",
+            borderRadius: "5px",
+            color: "white",
+            fontSize: "12px",
+            fontWeight: "bold",
+          }}
+        >
+          Schedule Order
+        </Stack>
+      )}
+
+      {/*{deliveryStatus === "free" && (
         <Stack
           sx={{
             position: "absolute",
@@ -298,14 +414,14 @@ const StoresInfoCard = (props) => {
             zIndex: "99",
             borderRadius: "5px",
             color: "white",
-            fontSize: "12px",
+            fontSize: "12px", 
             fontWeight: "bold",
           }}
         >
           {t("0 HUF delivery fee")}
 
         </Stack>
-      )}
+      )}*/}
 
       {/*      /*{isCoupon(data) && (
         <Stack
@@ -437,9 +553,9 @@ const StoresInfoCard = (props) => {
                 {/* Fee */}
                 <Stack direction="row" spacing={0.5} alignItems="center">
                   <DeliveryDiningIcon sx={{ fontSize: 16, color: gray }} />
-                  {/*<Typography variant="caption" color={gray}>
-                    {deliveryStatus || "0 HUF"}
-                  </Typography>*/}
+                  <Typography variant="caption" color={gray}>
+                    {deliveryfees || "0"}  HUF
+                  </Typography>
                 </Stack>
 
                 {/* Time */}
