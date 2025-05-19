@@ -1034,8 +1034,8 @@ export const getCalculatedTotal = (
 	destination,
 	extraCharge
 ) => {
-	if (couponDiscount) {
-		if (couponDiscount?.coupon_type === "free_delivery") {
+	if (couponDiscount || freeDelivery) {
+		if (couponDiscount?.coupon_type === "free_delivery" || freeDelivery? true : "true") {
 			return (
 				getSubTotalPrice(cartList) -
 				getProductDiscount(cartList, storeData) +

@@ -41,7 +41,6 @@ const OrderCalculation = (props) => {
     usePartialPayment,
   } = props;
   const { t } = useTranslation();
-  const [freeDelivery, setFreeDelivery] = useState("false");
   const theme = useTheme();
   let couponType = "pele";
   const getDigitalPaymentPercentage = () => {
@@ -62,7 +61,40 @@ const OrderCalculation = (props) => {
       return configData?.stripe_perchantage;
     }
   };
+
+  const isFreeDelivery = () => {
+    const distanceInKm =
+      distanceData?.data?.rows?.[0]?.elements?.[0]?.distance?.value / 1000;
+
+    const distanceFree =
+      storeData?.free_delivery_set_by_admin === 1 &&
+      storeData?.free_delivery_required_km_upto_status === 1 &&
+      distanceInKm !== null &&
+      distanceInKm <= storeData?.free_delivery_required_km_upto;
+
+    const couponFree = couponDiscount?.coupon_type === "free_delivery";
+
+    return distanceFree || couponFree;
+  };
+
+  const isFreeDeliveryByDistance = () => {
+    const distanceInKm =
+      distanceData?.data?.rows?.[0]?.elements?.[0]?.distance?.value / 1000;
+
+    return (
+      storeData?.free_delivery_set_by_admin === 1 &&
+      storeData?.free_delivery_required_km_upto_status === 1 &&
+      distanceInKm !== null &&
+      distanceInKm <= storeData?.free_delivery_required_km_upto
+    );
+  };
+
   const handleDeliveryFee = () => {
+    if (isFreeDelivery()) {
+      setDeliveryFee(0);
+      return <Typography fontWeight="bold">{t("Free")}</Typography>;
+    }
+
     let price = getDeliveryFees(
       storeData,
       configData,
@@ -76,7 +108,7 @@ const OrderCalculation = (props) => {
       destination,
       extraCharge
     );
-console.log({price});
+    console.log({ price });
 
     setDeliveryFee(price);
     if (price === 0) {
@@ -106,7 +138,6 @@ console.log({price});
     );
 
     if (couponDiscount && couponDiscount.coupon_type === "free_delivery") {
-      setFreeDelivery("true");
       return 0;
     } else {
       return getAmountWithSign(couponDiscountValue);
@@ -126,7 +157,7 @@ console.log({price});
       distanceData,
       couponType,
       orderType,
-      freeDelivery,
+      isFreeDelivery(),
       deliveryTip,
       zoneData,
       origin,
@@ -137,10 +168,11 @@ console.log({price});
     dispatch(setTotalAmount(totalAmount));
     return totalAmount + (serviceChange || 0);
   };
+  console.log("freeeeee",isFreeDelivery())
 
   // let totalAfterPartials = handleOrderAmount();
   const discountedPrice = getProductDiscount(cartList, storeData);
-  console.log({discountedPrice})
+  console.log({ discountedPrice })
 
   // useEffect(() => {
   //   totalAfterPartials = handleOrderAmount() - walletBalance;

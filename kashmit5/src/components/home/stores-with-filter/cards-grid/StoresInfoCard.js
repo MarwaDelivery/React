@@ -32,7 +32,7 @@ import { calculateDistanceInMeters } from "../../../../utils/geoUtils";
 import coords from "components/landing-page/hero-section/HeroLocationForm";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import StarIcon from "@mui/icons-material/Star"; // or use your existing RatingStar
+import StarIcon from "@mui/icons-material/Star";
 import {
   getBasicDeliveryFee
 } from "../../../../utils/CustomFunctions";
@@ -273,11 +273,13 @@ const StoresInfoCard = (props) => {
   let module_type = null;
   //const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
   let deliveryStatus = null;
+  
   if (data.free_delivery_description != null) {
     deliveryStatus = data.free_delivery_description;
   } else {
     deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
   }
+
   if (moduleId == 2) {
     module_type = "grocery"
   } else if (moduleId == 3) {
