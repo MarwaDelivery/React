@@ -46,7 +46,7 @@ const BannersWrapper = styled(Box)(({ theme, isSingle }) => ({
     height: "220px",
   },
   [theme.breakpoints.down("sm")]: {
-    height:"160px",
+    height: "160px",
   },
   [theme.breakpoints.down("xs")]: {
     height: "120px",
@@ -55,6 +55,67 @@ const BannersWrapper = styled(Box)(({ theme, isSingle }) => ({
     height: "390px",
   },
 }));
+
+const NextArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <div
+      style={{
+        display: "flex",                // use flex to center the arrow inside the circle
+        justifyContent: "center",
+        alignItems: "center",
+        background: "green",            // green background
+        color: "white",                // white arrow color
+        borderRadius: "50%",           // makes it a circle
+        width: "40px",                 // fixed width and height for the circle
+        height: "40px",
+        position: "absolute",
+        right: 10,
+        top: "50%",
+        transform: "translateY(-50%)",
+        cursor: "pointer",
+        zIndex: 1,
+        fontWeight: "bold",
+        fontSize: "24px",
+        userSelect: "none",
+      }}
+      onClick={onClick}
+    >
+      ▶
+    </div>
+  );
+};
+
+const PrevArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <div
+      style={{
+        display: "flex",                
+        justifyContent: "center",
+        alignItems: "center",
+        background: "green",            
+        color: "white",                
+        borderRadius: "50%",           
+        width: "40px",
+        height: "40px",
+        position: "absolute",
+        left: 20,
+        top: "50%",
+        transform: "translateY(-50%)",
+        cursor: "pointer",
+        zIndex: 1,
+        fontWeight: "bold",
+        fontSize: "24px",
+        userSelect: "none",
+      }}
+      onClick={onClick}
+    >
+      ◀
+    </div>
+  );
+};
+
 
 
 const Banners = (props) => {
@@ -100,13 +161,13 @@ const Banners = (props) => {
     const moduleId = banner?.store?.module_id;
     if (moduleId == 2) {
       moduleType = "grocery"
-    }else if (moduleId == 3){
+    } else if (moduleId == 3) {
       moduleType = "food"
-    }else if (moduleId == 7){
+    } else if (moduleId == 7) {
       moduleType = "parcel"
-    } else{
+    } else {
       return null;
-    };  
+    };
     console.log('Data:', data);
     if (banner?.isCampaign) {
       router.push({
@@ -159,7 +220,7 @@ const Banners = (props) => {
       width: isSingle ? "70%" : "100%", // Slightly wider on mobile
     },
   }));
-  
+
   const settings = {
     dots: false,
     infinite: bannersData.length > 1,
@@ -177,10 +238,13 @@ const Banners = (props) => {
     autoplay: bannersData.length > 1, // Only autoplay if multiple banners
     speed: 800,
     autoplaySpeed: 4000,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+
     cssEase: "linear",
   };
   const isSmall = useMediaQuery("(max-width:1180px)");
-  
+
 
   return (
     <>
@@ -217,7 +281,7 @@ const Banners = (props) => {
               </BannersWrapper>
             )}
           </Slider>
-          </SliderContainer>
+        </SliderContainer>
       </CustomStackFullWidth>
       {openModal && foodBanner && (
         <FoodDetailModal
