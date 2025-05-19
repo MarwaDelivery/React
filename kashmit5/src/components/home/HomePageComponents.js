@@ -20,6 +20,7 @@ import DeliveryPlace from "./DeliveryPlace";
 import { Box, Stack } from "@mui/system";
 import useGetCategoryLists from "api-manage/hooks/react-query/category-list/useGetCategoryLists";
 import useGetCategoryListspopular from "api-manage/hooks/react-query/category-list-popular/useGetCategoryListspopular";
+import { useGetSpecialCategoryListOne, useGetSpecialCategoryListTwo, useGetSpecialCategoryListThree } from "api-manage/hooks/categories-lists/useGetCategoriesList";
 import CategoryStore from "./CategoryStore/CategoryStore";
 import CategoryStorePopular from "./CategoryStorePopular/CategoryStorePopular";
 import { getCurrentModuleType } from "helper-functions/getCurrentModuleType";
@@ -42,6 +43,11 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
     data: categoryListsPopular,
     refetch: categoryListPopularRefetch,
   } = useGetCategoryListspopular();
+
+  const { data: listOne, isLoading, error } = useGetSpecialCategoryListOne();
+  const { data: listTwo } = useGetSpecialCategoryListTwo();
+  const { data: listThree } = useGetSpecialCategoryListThree();
+
 
 
 
@@ -112,8 +118,8 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
               <Grid item xs={12}>
                 <Banners />
               </Grid>
-              {categoryListsPopular?.length > 0 &&
-                categoryListsPopular?.map((item, index) => (
+              {listOne?.length > 0 &&
+                listOne?.map((item, index) => (
                   <Grid key={index} item xs={12}>
                     <CategoryStorePopular
                       isFetchingg={isFetching}
@@ -126,10 +132,20 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
                 <NewArrivalStores />
               </Grid>*/}
 
-              {categoryLists?.length > 0 &&
-                categoryLists?.map((item, index) => (
+              {listTwo?.length > 0 &&
+                listTwo?.map((item, index) => (
                   <Grid key={index} item xs={12}>
-                    <CategoryStore
+                    <CategoryStorePopular
+                      isFetching={isFetching}
+                      isSuccess={isSuccess}
+                      item={item}
+                    />
+                  </Grid>
+                ))}
+              {listThree?.length > 0 &&
+                listThree?.map((item, index) => (
+                  <Grid key={index} item xs={12}>
+                    <CategoryStorePopular
                       isFetching={isFetching}
                       isSuccess={isSuccess}
                       item={item}

@@ -7,6 +7,7 @@ import { HomeComponentsWrapper } from "../HomePageComponents";
 import CardsGrid from "../stores-with-filter/cards-grid";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import CardsCarousel from "../stores-with-filter/CardsCarousel";
 
 const CategoryStorePopular = ({ isFetching, isSuccess, item }) => {
   const router = useRouter();
@@ -46,12 +47,8 @@ const CategoryStorePopular = ({ isFetching, isSuccess, item }) => {
 
           </CustomStackFullWidth>
 
-          <CardsGrid
-            data={item?.stores}
-            totalSize={item?.total_size}
-            // handleMore={handleMore}
-            isFetching={!isSuccess ? false : isFetching}
-          />
+          <CardsCarousel data={item?.stores} />
+
         </>
       )}
       {/* {isFetching && (

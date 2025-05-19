@@ -82,3 +82,6 @@ export const ai_bot_message_list = "api/v1/customer/agent-chat/details";
 export const send_agent_chat_api = "/api/v1/customer/agent-chat/send";
 export const dm_notification_api =
 	"api/v1/customer/order/dm-custom-notification";
+export const specialCategoryListOneApi = "/api/v1/special-category/list-one";
+export const specialCategoryListTwoApi = "/api/v1/special-category/list-two";
+export const specialCategoryListThreeApi = "/api/v1/special-category/list-three";
