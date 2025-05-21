@@ -527,7 +527,17 @@ const Top = (props) => {
                               />
                             )}
                           </Stack>
-
+                          {!isFreeDelivery(storeDetails, total, distance) && (
+                            <Stack direction="row" alignItems="center" spacing={0.3}>
+                              <Typography
+                                sx={{
+                                  fontSize: "13px",
+                                }}
+                              >
+                                {t("Delivery Terms")}
+                              </Typography>
+                            </Stack>
+                          )}
                           {isFreeDelivery(storeDetails, total, distance) && (
                             <Stack direction="row" alignItems="center" spacing={0.3}>
                               <Typography

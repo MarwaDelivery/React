@@ -277,13 +277,13 @@ const StoresInfoCard = (props) => {
   //const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
   let deliveryStatus = null;
 
- if (userLang === "hu" && data.free_delivery_description_hu != null) {
-  deliveryStatus = data.free_delivery_description_hu;
-} else if (data.free_delivery_description != null) {
-  deliveryStatus = data.free_delivery_description;
-} else {
-  deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
-}
+  if (userLang === "hu" && data.free_delivery_description_hu != null) {
+    deliveryStatus = data.free_delivery_description_hu;
+  } else if (data.free_delivery_description != null) {
+    deliveryStatus = data.free_delivery_description;
+  } else {
+    deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
+  }
 
   if (moduleId == 2) {
     module_type = "grocery"
@@ -396,21 +396,24 @@ const StoresInfoCard = (props) => {
         <Stack
           sx={{
             position: "absolute",
-            top: "52%",
+            top: "49.4%",
             left: "0.3%",
-            backgroundColor: theme.palette.secondary.main,
-            padding: "5px 8px",
-            zIndex: "99",
+            width: "100%",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            padding: "10px 16px",  
+            zIndex: 99,
             borderRadius: "5px",
             color: "white",
-            fontSize: "12px",
+            fontSize: "14px",      
             fontWeight: "bold",
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            gap: "6px",
+            justifyContent: "center",  
+            gap: "8px",
           }}
         >
+          <AccessTimeIcon sx={{ fontSize: "16px", color: "white" }} />
           {t("Schedule Order")}
         </Stack>
       )}

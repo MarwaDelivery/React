@@ -849,5 +849,5 @@ export const english = {
     "applied":"applied",
     "Temporarily Offline":"Temporarily Offline",
     "Schedule Order":"Schedule Order",
-    
+    "Delivery Terms":"Delivery Terms",
 };

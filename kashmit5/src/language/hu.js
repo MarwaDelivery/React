@@ -850,4 +850,5 @@ export const hungarian = {
   "applied":"felszámítva",
   "Temporarily Offline":"Ideiglenesen nem elérhető",
   "Schedule Order":"Rendelés időzítése",
+  "Delivery Terms":"Szállítási Feltételek",
 };
