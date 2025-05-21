@@ -381,30 +381,32 @@ const handleTotalDiscountBasedOnModules = (
 };
 
 const handleProductWiseDiscount = (items) => {
-	console.log({ items })
 	let totalDiscount = 0;
+
 	items?.forEach((item) => {
-		if (item.discount > 0 || item?.store_discount > 0) {
+		const quantity = item.quantity || 1;
+		const priceWithoutDiscount = handleProductValueWithOutDiscount(item);
+
+		if (item.discount > 0 || item.store_discount > 0) {
 			if (item.discount_type === "amount") {
-				totalDiscount += item?.store_discount !== 0 ? item?.discount : item?.store_discount * item.quantity;
+				const discountAmount = item.discount > 0 ? item.discount : item.store_discount;
+				totalDiscount += discountAmount * quantity;
 			} else {
-				let a =
-					handleProductValueWithOutDiscount(item) -
-					getConvertDiscount(
-						item.discount,
-						item.discount_type,
-						handleProductValueWithOutDiscount(item),
-						item.store_discount
-					);
-				totalDiscount += a * item.quantity;
+				// percentage
+				const discount = getConvertDiscount(
+					item.discount,
+					item.discount_type,
+					priceWithoutDiscount,
+					item.store_discount
+				);
+				totalDiscount += discount * quantity;
 			}
-		} else {
-			totalDiscount += item.discount;
 		}
 	});
-	console.log({ totalDiscount })
+
 	return totalDiscount;
 };
+
 export const getProductDiscount = (items, storeData) => {
 	console.log({ storeData })
 	if (storeData?.discount) {
@@ -1035,7 +1037,7 @@ export const getCalculatedTotal = (
 	extraCharge
 ) => {
 	if (couponDiscount || freeDelivery) {
-		if (couponDiscount?.coupon_type === "free_delivery" || freeDelivery? true : "true") {
+		if (couponDiscount?.coupon_type === "free_delivery" || freeDelivery ? true : "true") {
 			return (
 				getSubTotalPrice(cartList) -
 				getProductDiscount(cartList, storeData) +

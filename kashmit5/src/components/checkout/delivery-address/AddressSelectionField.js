@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { InputBase, Typography } from "@mui/material";
 // import AddNewAddress from '../customer-page/address/AddNewAddress'
@@ -10,6 +10,7 @@ const AddressSelectionField = (props) => {
   const { theme, address, refetch, t, configData, setAddress, isConfirm } =
     props;
   const borderColor = theme.palette.primary.main;
+
   return (
     <>
       <InputField

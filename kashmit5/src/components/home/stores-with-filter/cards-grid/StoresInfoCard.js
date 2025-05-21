@@ -37,6 +37,7 @@ import {
   getBasicDeliveryFee
 } from "../../../../utils/CustomFunctions";
 import useGetDistance from "api-manage/hooks/react-query/google-api/useGetDistance";
+import i18n from "language/i18n";
 
 
 
@@ -157,6 +158,8 @@ const StoresInfoCard = (props) => {
     isError,
   } = useGetDistance(customerCoords, storeCoords); // ✅ top-level hook usage
 
+  const userLang = i18n.language
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("currentLatLng");
@@ -191,45 +194,45 @@ const StoresInfoCard = (props) => {
     }
     return null;
   }, [distanceData]);
- /*useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("currentLatLng");
-      if (stored) {
-        try {
-          const { lat, lng } = JSON.parse(stored);
-          const storeLat = data?.latitude;
-          const storeLng = data?.longitude;
-          const customerCoords = JSON.parse(stored); // { lat, lng }
-          const storeCoords = {
-            lat: data?.latitude,
-            lng: data?.longitude
-          };
-          //console.log("StoreLat", storeLat);
-          //console.log("StoreLng", storeLng);
-          //console.log("customerlat", lat);
-          //console.log("customerlng", lng);
-
-          if (
-            lat != null &&
-            lng != null &&
-            storeLat != null &&
-            storeLng != null
-          ) {
-            const distance = calculateDistanceInMeters(
-              lat,
-              lng,
-              storeLat,
-              storeLng
-            );
-            setDistanceToCustomer(distance);
-            //console.log("distance",distance)
-          }
-        } catch (error) {
-          console.error("Failed to parse currentLatLng from localStorage:", error);
-        }
-      }
-    }
-  }, [data]);*/
+  /*useEffect(() => {
+     if (typeof window !== "undefined") {
+       const stored = localStorage.getItem("currentLatLng");
+       if (stored) {
+         try {
+           const { lat, lng } = JSON.parse(stored);
+           const storeLat = data?.latitude;
+           const storeLng = data?.longitude;
+           const customerCoords = JSON.parse(stored); // { lat, lng }
+           const storeCoords = {
+             lat: data?.latitude,
+             lng: data?.longitude
+           };
+           //console.log("StoreLat", storeLat);
+           //console.log("StoreLng", storeLng);
+           //console.log("customerlat", lat);
+           //console.log("customerlng", lng);
+ 
+           if (
+             lat != null &&
+             lng != null &&
+             storeLat != null &&
+             storeLng != null
+           ) {
+             const distance = calculateDistanceInMeters(
+               lat,
+               lng,
+               storeLat,
+               storeLng
+             );
+             setDistanceToCustomer(distance);
+             //console.log("distance",distance)
+           }
+         } catch (error) {
+           console.error("Failed to parse currentLatLng from localStorage:", error);
+         }
+       }
+     }
+   }, [data]);*/
   /* useEffect(() => {
      const customerLat = latitude;
      const customerLng = longitude;
@@ -256,14 +259,14 @@ const StoresInfoCard = (props) => {
    */
 
 
-   useEffect(() => {
-  if (
-    distanceData?.rows?.[0]?.elements?.[0]?.distance?.value != null
-  ) {
-    const distance = distanceData.rows[0].elements[0].distance.value;
-    setDistanceToCustomer(distance);
-  }
-}, [distanceData]);
+  useEffect(() => {
+    if (
+      distanceData?.rows?.[0]?.elements?.[0]?.distance?.value != null
+    ) {
+      const distance = distanceData.rows[0].elements[0].distance.value;
+      setDistanceToCustomer(distance);
+    }
+  }, [distanceData]);
 
 
   const id = data?.id ? data?.id : data?.slug;
@@ -273,12 +276,14 @@ const StoresInfoCard = (props) => {
   let module_type = null;
   //const moduleId = JSON.parse(window.localStorage.getItem("module"))?.id;
   let deliveryStatus = null;
-  
-  if (data.free_delivery_description != null) {
-    deliveryStatus = data.free_delivery_description;
-  } else {
-    deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
-  }
+
+ if (userLang === "hu" && data.free_delivery_description_hu != null) {
+  deliveryStatus = data.free_delivery_description_hu;
+} else if (data.free_delivery_description != null) {
+  deliveryStatus = data.free_delivery_description;
+} else {
+  deliveryStatus = getDeliveryFeeStatus(data, distanceToCustomer);
+}
 
   if (moduleId == 2) {
     module_type = "grocery"
@@ -387,22 +392,26 @@ const StoresInfoCard = (props) => {
           {deliveryStatus}
         </Stack>
       )}
-      {data.schedule_order && data.open === 0 &&(
+      {data.schedule_order && (data.open === 0 || data.active == false) && (
         <Stack
           sx={{
             position: "absolute",
             top: "52%",
             left: "0.3%",
             backgroundColor: theme.palette.secondary.main,
-            padding: "5px",
+            padding: "5px 8px",
             zIndex: "99",
             borderRadius: "5px",
             color: "white",
             fontSize: "12px",
             fontWeight: "bold",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "6px",
           }}
         >
-          Schedule Order
+          {t("Schedule Order")}
         </Stack>
       )}
 

@@ -847,5 +847,7 @@ export const hungarian = {
   "Set Location": "Hely megadása",
   "Pick Form Map": "Térkép",
   "Jobs": "Állások",
-  "applied":"felszámítva"
+  "applied":"felszámítva",
+  "Temporarily Offline":"Ideiglenesen nem elérhető",
+  "Schedule Order":"Rendelés időzítése",
 };

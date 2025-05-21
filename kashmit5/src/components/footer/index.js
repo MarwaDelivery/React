@@ -28,13 +28,6 @@ const FooterComponent = (props) => {
         <CustomContainer alignItems="center" >
           <CustomStackFullWidth width="86% !important" marginLeft="7%" spacing={3}>
             <FooterTop />
-            <Box
-              display="flex"
-              width="100%"
-              justifyContent={{ xs: "center", md: "flex-start" }}
-            >
-              <CustomLanguage formmobilemenu={false} />
-            </Box>
             <FooterMiddle configData={configData} />
           </CustomStackFullWidth>
         </CustomContainer>

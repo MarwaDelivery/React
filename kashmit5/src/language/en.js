@@ -847,4 +847,7 @@ export const english = {
     "Pick Form Map":"Pick Form Map",
     "0 HUF":"0 HUF",
     "applied":"applied",
+    "Temporarily Offline":"Temporarily Offline",
+    "Schedule Order":"Schedule Order",
+    
 };

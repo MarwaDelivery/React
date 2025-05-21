@@ -63,11 +63,17 @@ const AddressForm = ({
     onSubmit: async (values, helpers) => {
       try {
         formSubmitOnSuccess(values);
-      } catch (err) {}
+      } catch (err) { }
     },
   });
+
+  useEffect(() => {
+    addAddressFormik.setFieldValue("latitude", lat);
+    addAddressFormik.setFieldValue("longitude", lng);
+  }, [lat, lng]);
+
   const formSubmitOnSuccess = (values) => {
-    if(zoneData){
+    if (zoneData) {
       mutate(values, {
         onSuccess: (response) => {
           setAddress?.({
@@ -75,7 +81,12 @@ const AddressForm = ({
             lat: values.latitude,
             lng: values.longitude,
           });
-  
+
+
+          //    console.log("LangLat11", values.latitude, values.longitude)
+          //    console.log("LangLat12", {lat,lng})
+
+
           toast.success(response?.message);
           popoverClose?.();
           refetch?.();
@@ -86,10 +97,10 @@ const AddressForm = ({
         },
         onError: onErrorResponse,
       });
-    }else{
-       toast.error("out of zone");
+    } else {
+      toast.error("out of zone");
     }
-   
+
   };
 
   const nameHandler = (value) => {
@@ -129,7 +140,11 @@ const AddressForm = ({
                 label={t("Address")}
                 touched={addAddressFormik.touched.address}
                 errors={addAddressFormik.errors.address}
-                fieldProps={addAddressFormik.getFieldProps("address")}
+                fieldProps={{
+                  ...addAddressFormik.getFieldProps("address"),
+                  readOnly: true,
+                  disapled: true,
+                }}
                 value={addAddressFormik.values.address}
               />
             )}

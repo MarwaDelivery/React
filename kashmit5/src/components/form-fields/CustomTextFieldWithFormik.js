@@ -29,7 +29,7 @@ const CustomTextFieldWithFormik = (props) => {
   const onBlurHandler = () => {
     onChangeHandler(inputValue);
   };
-
+const isAddressField = fieldProps?.name === "address";
   const renderHandler = () => {
     if (type === "password") {
       return (
@@ -85,7 +85,9 @@ const CustomTextFieldWithFormik = (props) => {
             onBlur={onBlurHandler}
             type={type}
             InputProps={{
-              inputProps: { min: 0 },
+              inputProps: { min: 0 ,
+                readOnly: isAddressField,
+              },
             }}
             {...fieldProps}
           />

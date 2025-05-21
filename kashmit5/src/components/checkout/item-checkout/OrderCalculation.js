@@ -29,7 +29,7 @@ const OrderCalculation = (props) => {
     couponInfo,
     deliveryTip,
     origin,
-    destination,
+    address,
     zoneData,
     setDeliveryFee,
     extraCharge,
@@ -105,7 +105,7 @@ const OrderCalculation = (props) => {
       orderType,
       zoneData,
       origin,
-      destination,
+      address,
       extraCharge
     );
     console.log({ price });
@@ -142,6 +142,7 @@ const OrderCalculation = (props) => {
     } else {
       return getAmountWithSign(couponDiscountValue);
     }
+    console.log("couponDiscount",couponDiscount)
   };
   const dispatch = useDispatch();
   useEffect(() => {
@@ -161,14 +162,13 @@ const OrderCalculation = (props) => {
       deliveryTip,
       zoneData,
       origin,
-      destination,
+      address,
       extraCharge
     );
     setPayableAmount(totalAmount);
     dispatch(setTotalAmount(totalAmount));
     return totalAmount + (serviceChange || 0);
   };
-  console.log("freeeeee",isFreeDelivery())
 
   // let totalAfterPartials = handleOrderAmount();
   const discountedPrice = getProductDiscount(cartList, storeData);

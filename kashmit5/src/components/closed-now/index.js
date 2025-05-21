@@ -4,11 +4,17 @@ import { useTranslation } from "react-i18next";
 import { Stack } from "@mui/system";
 import { alpha, Typography, useTheme } from "@mui/material";
 import ClosedNowOverlay from "./ClosedNowOverlay";
+import TemporaryOfflineOverlay from "./TemporaryOfflineOverlay";
 
 const ClosedNow = (props) => {
   const { active, open, borderRadius } = props;
 
-  if (!active || open === 0) {
+  if (open === 0 && !active) {
+    return <ClosedNowOverlay borderRadius={borderRadius} />;
+  }
+  else if (!active) {
+    return <TemporaryOfflineOverlay borderRadius={borderRadius} />;
+  } else if (open === 0) {
     return <ClosedNowOverlay borderRadius={borderRadius} />;
   }
 
