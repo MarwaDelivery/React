@@ -580,7 +580,7 @@ export const hungarian = {
   "Your Profile": "Profilod",
   "No Coupon Found": "Nem található kupon",
   "Search a restaurant": "Keressen egy éttermet",
-  "Closed Now": "Most bezárt",
+  "Closed Now": "Zárva",
   Min: "Perc",
   "% off on all foods": "% szabadon minden ételről",
   Enjoy: "Élvezd",

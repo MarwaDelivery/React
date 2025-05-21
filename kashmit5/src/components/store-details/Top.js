@@ -515,7 +515,7 @@ const Top = (props) => {
                             justifyContent="space-between"
                           >
                             <DeliveryDiningIcon />
-                            {isFreeDelivery(storeDetails, total, distance) && (
+                            {!isFreeDelivery(storeDetails, total, distance) && (
                               <InfoIcon
                                 onClick={() => {
                                   setShowInfoModal(true);
@@ -528,19 +528,17 @@ const Top = (props) => {
                             )}
                           </Stack>
 
-                          <Stack
-                            direction="row"
-                            alignItems="center"
-                            spacing={0.3}
-                          >
-                            <Typography
-                              sx={{
-                                fontSize: "13px",
-                              }}
-                            >
-                              {t("Free Delivery")}
-                            </Typography>
-                          </Stack>
+                          {isFreeDelivery(storeDetails, total, distance) && (
+                            <Stack direction="row" alignItems="center" spacing={0.3}>
+                              <Typography
+                                sx={{
+                                  fontSize: "13px",
+                                }}
+                              >
+                                {t("Free Delivery")}
+                              </Typography>
+                            </Stack>
+                          )}
                         </Stack>
                       ) : // <Stack
                         //   direction="row"
