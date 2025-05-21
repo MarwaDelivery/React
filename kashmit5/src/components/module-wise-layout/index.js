@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedModule } from "../../redux/slices/utils";
 import { useRouter } from "next/router";
 import {
+  Drawer,
   IconButton,
   Popover,
   Stack,
@@ -31,6 +32,7 @@ const ModuleWiseLayout = ({ configData }) => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [type, setType] = React.useState("ai");
+  const [mobileModuleDrawer, setMobileModuleDrawer] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -74,6 +76,41 @@ const ModuleWiseLayout = ({ configData }) => {
           configData={configData}
           dispatch={dispatch}
         />
+      )}
+      {isSmall && data && data?.length > 1 && (
+        <Box
+          sx={{
+            overflowX: "auto",
+            width: "100%",
+            padding: "10px 0",
+            // Optional: add some padding or margin as you like
+            // Scrollbar styling for WebKit browsers (Chrome, Safari, Edge)
+            "&::-webkit-scrollbar": {
+              height: "6px",
+            },
+            "&::-webkit-scrollbar-track": {
+              background: "#f0f0f0",
+              borderRadius: "3px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#1976d2", // MUI primary blue color
+              borderRadius: "3px",
+            },
+
+            // Scrollbar styling for Firefox
+            scrollbarWidth: "thin",
+            scrollbarColor: "#1976d2 #f0f0f0",
+          }}
+        >
+          <ModuleSelect
+            moduleSelectHandler={moduleSelectHandler}
+            selectedModule={selectedModule}
+            data={data}
+            configData={configData}
+            dispatch={dispatch}
+            isMobileView={true}
+          />
+        </Box>
       )}
 
       {/*{getToken() ? (*/}

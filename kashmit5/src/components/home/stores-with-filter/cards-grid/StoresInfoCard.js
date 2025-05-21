@@ -387,7 +387,7 @@ const StoresInfoCard = (props) => {
           {deliveryStatus}
         </Stack>
       )}
-      {data.schedule_order && (
+      {data.schedule_order && data.open === 0 &&(
         <Stack
           sx={{
             position: "absolute",
