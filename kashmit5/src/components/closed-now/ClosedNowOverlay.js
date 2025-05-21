@@ -17,10 +17,11 @@ const ClosedNowOverlay = ({ borderRadius }) => {
         background: (theme) => alpha(theme.palette.primary.main, 0.5),
         color: (theme) => theme.palette.neutral[100],
         padding: "10px",
-        height: "100%",
+        height: "97%",
+        bottom:"3%",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: borderRadius || ".5rem",
+        borderRadius: borderRadius || "1rem",
       }}
     >
       <Typography align="center" color={theme.palette.neutral[100]}>
