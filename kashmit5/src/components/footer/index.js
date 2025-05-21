@@ -9,6 +9,8 @@ import FooterTop from "./footer-top/FooterTop";
 import FooterMiddle from "./footer-middle/FooterMiddle";
 import { useRouter } from "next/router";
 import CustomContainer from "../container";
+import CustomLanguage from "components/header/top-navbar/CustomLanguage";
+import { Box } from "@mui/system";
 
 const FooterComponent = (props) => {
   const { configData } = props;
@@ -18,15 +20,22 @@ const FooterComponent = (props) => {
     <StyledFooterBackground nobottommargin={isLandingPage}>
       <CustomStackFullWidth
         height="100%"
-     
+
         alignItems="center"
         justifyContent="space-between"
         spacing={2}
       >
-        <CustomContainer   alignItems="center" >
-          <CustomStackFullWidth width="86% !important" marginLeft="7%"      spacing={3}>
+        <CustomContainer alignItems="center" >
+          <CustomStackFullWidth width="86% !important" marginLeft="7%" spacing={3}>
             <FooterTop />
-            <FooterMiddle  configData={configData} />
+            <Box
+              display="flex"
+              width="100%"
+              justifyContent={{ xs: "center", md: "flex-start" }}
+            >
+              <CustomLanguage formmobilemenu={false} />
+            </Box>
+            <FooterMiddle configData={configData} />
           </CustomStackFullWidth>
         </CustomContainer>
         <FooterBottom width="60% !important" marginLeft="20%" configData={configData} />
