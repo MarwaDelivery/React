@@ -68,7 +68,7 @@ const ModuleWiseNav = (props) => {
               {router.pathname === "/" ? (
                 <LogoSide width="auto" height="50px" configData={configData} />
               ) : (
-                router.pathname === "/home" && <MobileModuleSelection />
+                router.pathname === "/home" //&& <MobileModuleSelection />
               )}
             </Grid>
             {router.pathname !== "/" && (

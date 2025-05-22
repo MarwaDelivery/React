@@ -95,7 +95,6 @@ const HomePageComponents = ({ configData, isDiscovery }) => {
             justifyContent="space-between"
             spacing={2}
           >
-            <DeliveryPlace />
             <ManageSearch
               zoneid={zoneid}
               token={token}

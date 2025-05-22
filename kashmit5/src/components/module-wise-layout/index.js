@@ -24,6 +24,8 @@ import TabForAI from "components/module-wise-layout/TabForAI";
 import CloseIcon from "@mui/icons-material/Close";
 import AiBot from "components/module-wise-layout/aibot";
 import { getToken } from "helper-functions/getToken";
+import { t } from "i18next";
+import DeliveryPlace from "components/home/DeliveryPlace";
 const ModuleWiseLayout = ({ configData }) => {
   const [rerender, setRerender] = useState(false);
   const { selectedModule } = useSelector((state) => state.utilsData);
@@ -66,6 +68,21 @@ const ModuleWiseLayout = ({ configData }) => {
     }
   };
 
+  const discoveryModule = {
+    id: null,
+    module_name: t("Discovery"),
+    module_type: null,
+    icon: "/discovery_icon.png",
+    zones: data?.flatMap((d) => d.zones).filter((v, i, a) => a.findIndex(t => t.id === v.id) === i),
+    status: "1",
+    isDiscovery: true,
+    stores_count: 0,
+  };
+
+  // Combine it *before* passing it to the component
+  const combinedModules = [discoveryModule, ...(data || [])];
+
+
   return (
     <CustomStackFullWidth>
       {!isSmall && data && data?.length > 1 && (
@@ -83,6 +100,8 @@ const ModuleWiseLayout = ({ configData }) => {
             overflowX: "auto",
             width: "100%",
             padding: "10px 0",
+            paddingLeft: "220px",
+            marginTop:"40px",
             // Optional: add some padding or margin as you like
             // Scrollbar styling for WebKit browsers (Chrome, Safari, Edge)
             "&::-webkit-scrollbar": {
@@ -105,7 +124,7 @@ const ModuleWiseLayout = ({ configData }) => {
           <ModuleSelect
             moduleSelectHandler={moduleSelectHandler}
             selectedModule={selectedModule}
-            data={data}
+            data={combinedModules}
             configData={configData}
             dispatch={dispatch}
             isMobileView={true}

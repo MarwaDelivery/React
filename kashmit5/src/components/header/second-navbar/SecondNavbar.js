@@ -29,6 +29,7 @@ import CardView from "../../added-cart-view";
 import CustomContainer from "../../container";
 import { getCartListModuleWise } from "../../../helper-functions/getCartListModuleWise";
 import ModuleWiseNav from "./ModuleWiseNav";
+import DeliveryPlace from "components/home/DeliveryPlace";
 
 const Cart = () => {
   const [sideDrawerOpen, setSideDrawerOpen] = useState(false);
@@ -217,6 +218,8 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
           </NoSsr>
         </Toolbar>
       </CustomContainer>
+                <DeliveryPlace />
+
     </Box>
   );
 };

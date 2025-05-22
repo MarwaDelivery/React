@@ -69,7 +69,11 @@ const ModuleSelect = ({
   };
 
   // Combine API modules with Discovery module
-  const allModules = [discoveryModule, ...(data || [])];
+  const hasDiscovery = data?.some((mod) => mod.module_name === t("Discovery") || mod.isDiscovery);
+
+  const allModules = hasDiscovery
+    ? [...(data || [])]
+    : [discoveryModule, ...(data || [])];
 
   useEffect(() => {
     const zoneFilteredModules = zoneWiseModule(allModules);
@@ -80,7 +84,7 @@ const ModuleSelect = ({
       moduleSelectHandler(discoveryModule);
     }
   }, []);
-    
+
 
   const handleModuleSelect = (item) => {
     if (item.isDiscovery) {
@@ -89,7 +93,7 @@ const ModuleSelect = ({
       moduleSelectHandler(item);
     }
 
-     else {
+    else {
       // Normal module handling
       dispatch(setSelectedModule(item));
       moduleSelectHandler(item);
@@ -114,7 +118,7 @@ const ModuleSelect = ({
               <CustomImageContainer
                 src={
                   item?.isDiscovery
-                    ? item.icon 
+                    ? item.icon
                     : `${configData?.base_urls?.module_image_url}/${item?.icon}`
                 }
                 width="36px"
