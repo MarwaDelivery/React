@@ -97,11 +97,13 @@ const ModuleWiseLayout = ({ configData }) => {
       {isSmall && data && data?.length > 1 && (
         <Box
           sx={{
+            position: "relative",
+            zIndex: 10,
             overflowX: "auto",
             width: "100%",
             padding: "10px 0",
             paddingLeft: "220px",
-            marginTop:"40px",
+            marginTop: "40px",
             // Optional: add some padding or margin as you like
             // Scrollbar styling for WebKit browsers (Chrome, Safari, Edge)
             "&::-webkit-scrollbar": {

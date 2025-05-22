@@ -218,8 +218,7 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
           </NoSsr>
         </Toolbar>
       </CustomContainer>
-                <DeliveryPlace />
-
+      {isSmall && <DeliveryPlace/>}
     </Box>
   );
 };
