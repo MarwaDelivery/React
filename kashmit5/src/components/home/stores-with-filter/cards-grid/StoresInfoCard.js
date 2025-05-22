@@ -396,7 +396,7 @@ const StoresInfoCard = (props) => {
         <Stack
           sx={{
             position: "absolute",
-            top: "49.4%",
+            top: "48.8%",
             left: "0.3%",
             width: "100%",
             backgroundColor: "rgba(0,0,0,0.5)",

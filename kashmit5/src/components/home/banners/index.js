@@ -64,13 +64,13 @@ const NextArrow = (props) => {
         display: "flex",                // use flex to center the arrow inside the circle
         justifyContent: "center",
         alignItems: "center",
-        background: "green",            // green background
+        background: "rgba(1, 255, 30, 0.2)",            // green background
         color: "white",                // white arrow color
         borderRadius: "50%",           // makes it a circle
         width: "40px",                 // fixed width and height for the circle
         height: "40px",
         position: "absolute",
-        right: 10,
+        right: "-20px",
         top: "50%",
         transform: "translateY(-50%)",
         cursor: "pointer",
@@ -81,7 +81,7 @@ const NextArrow = (props) => {
       }}
       onClick={onClick}
     >
-      ▶
+      ➜
     </div>
   );
 };
@@ -94,24 +94,24 @@ const PrevArrow = (props) => {
         display: "flex",                
         justifyContent: "center",
         alignItems: "center",
-        background: "green",            
+        background: "rgba(1, 255, 30, 0.2)",            
         color: "white",                
         borderRadius: "50%",           
         width: "40px",
         height: "40px",
         position: "absolute",
-        left: 20,
+        left: "-6px",
         top: "50%",
-        transform: "translateY(-50%)",
+        transform: "translateY(-50%) scaleX(-1)",
         cursor: "pointer",
-        zIndex: 1,
+        zIndex: 2,
         fontWeight: "bold",
         fontSize: "24px",
         userSelect: "none",
       }}
       onClick={onClick}
     >
-      ◀
+      ➜
     </div>
   );
 };
@@ -248,7 +248,7 @@ const Banners = (props) => {
 
   return (
     <>
-      <CustomStackFullWidth sx={{ mt: isSmall && "1.5rem" }}>
+      <CustomStackFullWidth sx={{ mt: isSmall && "1.5rem", position: "relative", overflow: "visible"  }}>
         <SliderContainer isSingle={bannersData.length === 1}>
           <Slider {...settings}>
             {bannersData.length > 0 &&
