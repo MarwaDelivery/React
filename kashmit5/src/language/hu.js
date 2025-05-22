@@ -795,7 +795,7 @@ export const hungarian = {
     "Regisztráljon eladóként, és nyissa meg a boltot a 6Ammart -ban a vállalkozás elindításához",
   "Join as a courier partner": "Csatlakozz hozzánk futárként",
   "to start your business": "A vállalkozás elindításához",
-  "Reach more customers and grow your business goals with Marwa":"Lépjen kapcsolatba minnél több ügyféllel és növelje üzleti céljait a Marwa segítségével.",
+  "Reach more customers and grow your business goals with Marwa": "Lépjen kapcsolatba minnél több ügyféllel és növelje üzleti céljait a Marwa segítségével.",
   "We assist in growing your business by connecting you with thousands of potential customers":
     "Segítjük vállalkozásának növekedésében azáltal, hogy összekötjük Önt több ezer potenciális ügyféllel.",
   "Start earning by delivering to local customers. Enjoy the flexibility to set your own hours and deliver on your terms":
@@ -835,7 +835,7 @@ export const hungarian = {
   "Saved Addresses": "Mentett címek",
   "This variation is out of stock": "Ez a variáció nincs raktáron",
   "0 HUF delivery fee": "0 Ft szállítási díj",
-  "0 HUF":"0 Ft",
+  "0 HUF": "0 Ft",
   "Store is closed. Try again later.": "A bolt bezárt. Próbáld újra később.",
   "Restaurant is closed. Try again later.":
     "Az étterem bezárt. Próbáld újra később.",
@@ -847,8 +847,12 @@ export const hungarian = {
   "Set Location": "Hely megadása",
   "Pick Form Map": "Térkép",
   "Jobs": "Állások",
-  "applied":"felszámítva",
-  "Temporarily Offline":"Ideiglenesen nem elérhető",
-  "Schedule Order":"Rendelés időzítése",
-  "Delivery Terms":"Szállítási Feltételek",
+  "applied": "felszámítva",
+  "Temporarily Offline": "Ideiglenesen nem elérhető",
+  "Schedule Order": "Rendelés időzítése",
+  "Delivery Terms": "Szállítási Feltételek",
+  "Get faster access, and exclusive offers.": "Gyorsabb hozzáférés és exkluzív ajánlatok.",
+  "Install App": "Applikáció telepítése",
+  "Maybe Later": "Talán később",
+  "Install Our App for a Better Experience!": "Telepítse alkalmazásunkat a jobb élményért!",
 };

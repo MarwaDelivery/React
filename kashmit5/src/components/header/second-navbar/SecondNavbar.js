@@ -30,6 +30,7 @@ import CustomContainer from "../../container";
 import { getCartListModuleWise } from "../../../helper-functions/getCartListModuleWise";
 import ModuleWiseNav from "./ModuleWiseNav";
 import DeliveryPlace from "components/home/DeliveryPlace";
+import MobileAppInstallPopup from "components/mobile-app-popup/MobileAppInstallPopup";
 
 const Cart = () => {
   const [sideDrawerOpen, setSideDrawerOpen] = useState(false);
@@ -96,6 +97,55 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
   return (
     <Box
       sx={{ width: "100%", backgroundColor: (scrollPosition !== 0 || toggled) && theme.palette.neutral[100] }}>
+      {configData?.warning_or_request_text && (
+        <Box
+          sx={{
+            backgroundColor: "#FFF3CD",
+            color: "#856404",
+            padding: "8px 0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            position: "relative",
+            fontWeight: "bold",
+            fontSize: {
+              xs: "13px",
+              sm: "14px",
+              md: "15px",
+            },
+            width: "100%",
+            zIndex: 1000,
+          }}
+        >
+          <Box
+            component="span"
+            sx={{
+              display: "inline-block",
+              paddingX: 2,
+              minWidth: "100%", // Important to make it scroll fully
+              animation: {
+                xs: "marquee 12s linear infinite",
+                sm: "marquee 18s linear infinite",
+                md: "marquee 30s linear infinite",
+              },
+              "&:hover": {
+                animationPlayState: "paused",
+              },
+            }}
+          >
+            {configData.warning_or_request_text}
+          </Box>
+
+          <style>
+            {`
+        @keyframes marquee {
+          0%   { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+      `}
+          </style>
+        </Box>
+      )}
+
       <CustomContainer>
         <Toolbar
           disableGutters={true}
@@ -218,7 +268,7 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
           </NoSsr>
         </Toolbar>
       </CustomContainer>
-      {isSmall && <DeliveryPlace/>}
+      {isSmall && router.pathname === "/home" && <DeliveryPlace />}
     </Box>
   );
 };

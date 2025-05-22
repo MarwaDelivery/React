@@ -843,11 +843,15 @@ export const english = {
   "Terms and Conditions": "Terms and Conditions",
   "Join our online marketplace revolution and boost your income.":
     "Join our online marketplace revolution and boost your income.",
-    "Set Location":"Set Location",
-    "Pick Form Map":"Pick Form Map",
-    "0 HUF":"0 HUF",
-    "applied":"applied",
-    "Temporarily Offline":"Temporarily Offline",
-    "Schedule Order":"Schedule Order",
-    "Delivery Terms":"Delivery Terms",
+  "Set Location": "Set Location",
+  "Pick Form Map": "Pick Form Map",
+  "0 HUF": "0 HUF",
+  "applied": "applied",
+  "Temporarily Offline": "Temporarily Offline",
+  "Schedule Order": "Schedule Order",
+  "Delivery Terms": "Delivery Terms",
+  "Get faster access, and exclusive offers.": "Get faster access, and exclusive offers.",
+  "Install App": "Install App",
+  "Maybe Later": "Maybe Later",
+  "Install Our App for a Better Experience!": "Install Our App for a Better Experience!"
 };

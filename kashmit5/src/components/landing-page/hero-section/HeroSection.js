@@ -14,6 +14,7 @@ import HeroTitleSection from "./HeroTitleSection";
 import HeroMapSection from "./HeroMapSection";
 import HeroLocationForm from "./HeroLocationForm";
 import CustomContainer from "../../container";
+import MobileAppInstallPopup from "components/mobile-app-popup/MobileAppInstallPopup";
 
 export const ColorContainer = styled(Box)(({ theme, backgroundUrl }) => ({
   background: `url(${backgroundUrl}) no-repeat center center / cover, linear-gradient(180deg, rgba(3, 157, 85, 0.05) 0%, rgb(92 169 108 / 31%) 100%)`,
@@ -27,8 +28,9 @@ const HeroSection = ({ configData, landingPageData, handleOrderNow }) => {
 
   return (
     <>
+      <MobileAppInstallPopup />
       <ColorContainer
-        backgroundUrl={backgroundUrl}  
+        backgroundUrl={backgroundUrl}
         paddingTop={{ xs: "6.5rem", md: "9rem" }}
         paddingBottom={{ xs: "3.563rem", md: "5rem" }}
       >
