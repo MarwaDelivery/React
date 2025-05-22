@@ -43,7 +43,7 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
             >
               {/*{landingPageData?.hero_section?.hero_section_heading?.slice(0, 40)}*/}
               <Typewriter
-                words={["Inkább... Marwa Foods"]}
+                words={[`${landingPageData?.hero_section?.hero_section_heading}`]}
                 //cursor
                 cursorStyle="_"
                 typeSpeed={60}
