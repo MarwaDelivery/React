@@ -25,12 +25,6 @@ const MobileAppInstallPopup = () => {
   const [platform, setPlatform] = useState("other");
 
   useEffect(() => {
-
-      if (process.env.NODE_ENV === "development") {
-    setOpen(true);
-    setPlatform("android "); // or "ios" to test
-    return;
-  }
     if (isMobile) {
       const detectedPlatform = detectPlatform();
       setPlatform(detectedPlatform);
