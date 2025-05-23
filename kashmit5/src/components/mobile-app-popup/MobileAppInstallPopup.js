@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Button, Dialog, DialogContent, DialogActions, Typography, useMediaQuery } from "@mui/material";
 import { t } from "i18next";
 
 const detectPlatform = () => {
@@ -17,6 +9,7 @@ const detectPlatform = () => {
   if (/android/i.test(ua)) {
     return "android";
   }
+  // Detect iOS including iPadOS (which has Mac-like UA but supports touch)
   if (
     /iPad|iPhone|iPod/.test(ua) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
@@ -32,6 +25,12 @@ const MobileAppInstallPopup = () => {
   const [platform, setPlatform] = useState("other");
 
   useEffect(() => {
+
+   /* if (process.env.NODE_ENV === "development") {
+      setOpen(true);
+      setPlatform("android "); // or "ios" to test
+      return;
+    }*/
     if (isMobile) {
       const detectedPlatform = detectPlatform();
       setPlatform(detectedPlatform);
@@ -46,75 +45,70 @@ const MobileAppInstallPopup = () => {
     localStorage.setItem("appInstallPopupDismissed", "true");
   };
 
-  // Your real app custom schemes (deep links)
-  const customScheme = {
-  android: "https://marwa.hu/openapp",
-  ios: "com.googleusercontent.apps.393744073684-rq9gv7el7q88clvk9c74gbf8es9e1ik3://home",
+  const getAppLink = () => {
+    if (platform === "android")
+      return "https://play.google.com/store/apps/details?id=com.marwa.androiduser&hl=en";
+    if (platform === "ios")
+      return "https://apps.apple.com/hu/app/marwa-foods/id6449415140"; // Replace with your real iOS app store link
+    return "https://play.google.com/store/apps/details?id=com.marwa.androiduser&hl=en"; // Android default link for other platforms
   };
 
-  const storeLinks = {
-    android: "https://play.google.com/store/apps/details?id=com.marwa.androiduser&hl=en",
-    ios: "https://apps.apple.com/hu/app/marwa-foods/id6449415140",
+  const getMessage = () => {
+    if (platform === "android")
+      return t("Install Our App for a Better Experience!");
+    if (platform === "ios")
+      return t("Install Our App for a Better Experience!");
+    return t("Install Our App for a Better Experience!");
   };
-
-  const tryOpenApp = () => {
-    const scheme = customScheme[platform];
-    const storeLink = storeLinks[platform];
-
-    if (!scheme) {
-      // fallback - just open store if no scheme found
-      window.open(storeLink, "_blank");
-      return;
-    }
-
-    // Try to open the app using custom URL scheme
-    let timeout;
-    const start = Date.now();
-
-    // Create an invisible iframe for iOS, or just set window.location for Android
-    if (platform === "ios") {
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = scheme;
-      document.body.appendChild(iframe);
-
-      timeout = setTimeout(() => {
-        document.body.removeChild(iframe);
-        // If the app didn't open, redirect to store
-        if (Date.now() - start < 1500) {
-          window.location.href = storeLink;
-        }
-      }, 1200);
-    } else {
-      // Android & other platforms
-      window.location.href = scheme;
-
-      timeout = setTimeout(() => {
-        // If the app didn't open in 1.5s, redirect to store
-        if (Date.now() - start < 1500) {
-          window.location.href = storeLink;
-        }
-      }, 1200);
-    }
-  };
-
-  const getMessage = () => t("Install Our App for a Better Experience!");
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-      <DialogContent sx={{ textAlign: "center" }}>
-        <Typography variant="h6" gutterBottom>
-          {getMessage()}
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2 }}>
-          {t("Get faster access, and exclusive offers.")}
-        </Typography>
-        <Button variant="contained" color="primary" onClick={tryOpenApp}>
-          {t("Install App")}
-        </Button>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="xs"
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          p: 2,
+          boxShadow: 6,
+          textAlign: "center",
+        },
+      }}
+    >
+      <DialogContent>
+        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+          <img
+            src="/icon.jpg" // Change this to your app icon
+            alt="App Logo"
+            style={{ width: "70px", height: "64px", borderRadius: 16 }}
+          />
+
+          <Typography variant="h6" fontWeight={600}>
+            {getMessage()}
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            {t("Get faster access, and exclusive offers.")}
+          </Typography>
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            size="large"
+            href={getAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ mt: 1 }}
+          >
+            {t("Install App")}
+          </Button>
+        </Box>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="inherit">
+
+      <DialogActions sx={{ justifyContent: "center", pb: 2 }}>
+        <Button onClick={handleClose} size="small" color="inherit">
           {t("Maybe Later")}
         </Button>
       </DialogActions>

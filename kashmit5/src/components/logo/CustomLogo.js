@@ -21,9 +21,17 @@ const CustomLogo = ({ logoImg, atlText, height, width, objectFit }) => {
   if (typeof window !== "undefined") {
     location = localStorage.getItem("location");
   }
-const handleClick = () => {
-  router.push("/home", undefined, { shallow: true });
-};
+  const handleClick = () => {
+    if (router.pathname === "/") {
+      if (location) {
+        router.push("/", undefined, { shallow: true });
+      } else {
+        router.push("/", undefined, { shallow: true });
+      }
+    } else {
+      router.push("/", undefined, { shallow: true }).then();
+    }
+  };
 
   return (
     <Logo height={height} width={width} onClick={() => handleClick()}>

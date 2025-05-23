@@ -97,7 +97,7 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
   return (
     <Box
       sx={{ width: "100%", backgroundColor: (scrollPosition !== 0 || toggled) && theme.palette.neutral[100] }}>
-      {configData?.warning_or_request_text && (
+      {configData?.warning_or_request_text && router.pathname === "/home" && (
         <Box
           sx={{
             backgroundColor: "#FFF3CD",
@@ -106,6 +106,7 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
             overflow: "hidden",
             whiteSpace: "nowrap",
             position: "relative",
+            whiteSpace:"pre",
             fontWeight: "bold",
             fontSize: {
               xs: "13px",
@@ -132,14 +133,15 @@ const SecondNavBar = ({ configData, scrollPosition }) => {
               },
             }}
           >
-            {configData.warning_or_request_text}
+            {configData.warning_or_request_text}             {configData.warning_or_request_text}
+
           </Box>
 
           <style>
             {`
         @keyframes marquee {
-          0%   { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
+          0%   { transform: translateX(0%); }
+          100% { transform: translateX(-20%); }
         }
       `}
           </style>

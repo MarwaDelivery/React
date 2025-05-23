@@ -52,7 +52,7 @@ function MyApp(props) {
       <CacheProvider value={emotionCache}>
         <QueryClientProvider client={queryClient}>
           <ReduxProvider store={store}>
-            <DelayedPersistGate persistor={persistor} delay={2000}>
+            <DelayedPersistGate persistor={persistor} delay={1000}>
               <SettingsProvider>
                 <SettingsConsumer>
                   {(value) => (
