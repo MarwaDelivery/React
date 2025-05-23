@@ -26,15 +26,17 @@ const MobileAppInstallPopup = () => {
 
   useEffect(() => {
 
-   /* if (process.env.NODE_ENV === "development") {
-      setOpen(true);
-      setPlatform("android "); // or "ios" to test
-      return;
-    }*/
+    /* if (process.env.NODE_ENV === "development") {
+       setOpen(true);
+       setPlatform("android "); // or "ios" to test
+       return;
+     }*/
     if (isMobile) {
       const detectedPlatform = detectPlatform();
       setPlatform(detectedPlatform);
-      if (localStorage.getItem("appInstallPopupDismissed") !== "true") {
+      const dismissedAt = parseInt(localStorage.getItem("appInstallPopupDismissedAt"), 10);
+      const oneDay = 1000 * 60 * 60 * 24;
+      if (!dismissedAt || Date.now() - dismissedAt > oneDay ) {
         setOpen(true);
       }
     }
@@ -42,7 +44,7 @@ const MobileAppInstallPopup = () => {
 
   const handleClose = () => {
     setOpen(false);
-    localStorage.setItem("appInstallPopupDismissed", "true");
+    localStorage.setItem("appInstallPopupDismissedAt", Date.now().toString());
   };
 
   const getAppLink = () => {
