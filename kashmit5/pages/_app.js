@@ -25,6 +25,7 @@ import SplashScreen from "../src/splash-screen";
 import { useEffect } from "react";
 import DynamicFavicon from "../src/components/favicon/DynamicFavicon";
 import ScrollToTop from "../src/components/ScrollToTop";
+import DelayedPersistGate from "../src/components/DelayedPersistGate"
 
 Router.events.on("routeChangeStart", nProgress.start);
 Router.events.on("routeChangeError", nProgress.done);
@@ -51,27 +52,29 @@ function MyApp(props) {
       <CacheProvider value={emotionCache}>
         <QueryClientProvider client={queryClient}>
           <ReduxProvider store={store}>
-            <SettingsProvider>
-              <SettingsConsumer>
-                {(value) => (
-                  <ThemeProvider
-                    theme={createTheme({
-                      direction: value?.settings?.direction,
-                      responsiveFontSizes: value?.settings?.responsiveFontSizes,
-                      mode: value?.settings?.theme,
-                    })}
-                  >
-                    <RTL direction={value?.settings?.direction}>
-                      <CssBaseline />
-                      <Toaster position="top-center" />
-                      <DynamicFavicon />
+            <DelayedPersistGate persistor={persistor} delay={2000}>
+              <SettingsProvider>
+                <SettingsConsumer>
+                  {(value) => (
+                    <ThemeProvider
+                      theme={createTheme({
+                        direction: value?.settings?.direction,
+                        responsiveFontSizes: value?.settings?.responsiveFontSizes,
+                        mode: value?.settings?.theme,
+                      })}
+                    >
+                      <RTL direction={value?.settings?.direction}>
+                        <CssBaseline />
+                        <Toaster position="top-center" />
+                        <DynamicFavicon />
 
-                      {getLayout(<Component {...pageProps} />)}
-                    </RTL>
-                  </ThemeProvider>
-                )}
-              </SettingsConsumer>
-            </SettingsProvider>
+                        {getLayout(<Component {...pageProps} />)}
+                      </RTL>
+                    </ThemeProvider>
+                  )}
+                </SettingsConsumer>
+              </SettingsProvider>
+            </DelayedPersistGate>
           </ReduxProvider>
           <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </QueryClientProvider>
