@@ -55,6 +55,7 @@ import moment from "moment";
 import ClickToCall from "components/header/top-navbar/ClickToCall";
 import { getDeliveryFeeStatus } from "components/home/stores-with-filter/cards-grid/StoresInfoCard";
 import { calculateDistanceInMeters } from "utils/geoUtils";
+import LocationViewStore from "components/Map/location-view/LocationViewStores";
 const ImageWrapper = styled(Box)(({ theme }) => ({
   position: "relative",
   borderRadius: "50%",
@@ -767,7 +768,7 @@ const Top = (props) => {
       )}
 
       {state.viewMap && (
-        <LocationViewOnMap
+        <LocationViewStore
           open={state.viewMap}
           handleClose={() =>
             dispatch({ type: ACTION.setViewMap, payload: false })
